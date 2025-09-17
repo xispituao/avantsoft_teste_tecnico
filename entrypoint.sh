@@ -79,6 +79,12 @@ fi
 
 echo "📦 Verificando dependências..."
 if [ -f Gemfile ]; then
+  # Configura bundle para usar vendor/bundle
+  bundle config set --local path 'vendor/bundle'
+  
+  # Adiciona vendor/bundle/bin ao PATH
+  export PATH="/avantsoft_app/vendor/bundle/bin:$PATH"
+  
   # Verifica se as dependências já estão instaladas
   if bundle check > /dev/null 2>&1; then
     echo "✅ Dependências já instaladas (cache aproveitado)"

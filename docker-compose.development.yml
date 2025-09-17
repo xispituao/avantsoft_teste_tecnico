@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile.development
     volumes:
       - .:/avantsoft_app
+      - gems_cache:/avantsoft_app/vendor/bundle
     ports:
       - "${RAILS_PORT}:${RAILS_INTERNAL_PORT:-3000}"
     environment:
@@ -46,3 +47,4 @@ services:
 
 volumes:
   postgres_data:
+  gems_cache:

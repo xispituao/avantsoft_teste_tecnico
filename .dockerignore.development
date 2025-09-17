@@ -56,7 +56,7 @@ ehthumbs.db
 
 # Ruby specific (ignorar gems instaladas, mas manter Gemfile)
 .bundle/
-vendor/bundle/
+# vendor/bundle/ - REMOVIDO: permite cache de gems em desenvolvimento
 *.gem
 
 # Node specific
