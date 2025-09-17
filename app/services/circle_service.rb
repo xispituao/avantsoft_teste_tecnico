@@ -27,14 +27,19 @@ class CircleService
 
   def self.search_circles(params)
     # Validar parâmetros obrigatórios
-    center_x = params[:center_x]&.to_f
-    center_y = params[:center_y]&.to_f
-    radius = params[:radius]&.to_f
+    center_x = params[:center_x]
+    center_y = params[:center_y]
+    radius = params[:radius]
     frame_id = params[:frame_id]
 
-    if center_x.nil? || center_y.nil? || radius.nil?
+    # Verificar se os parâmetros estão presentes e não são vazios
+    if center_x.blank? || center_y.blank? || radius.blank?
       return { success: false, errors: [I18n.t('services.circle_service.errors.search_params_required')] }
     end
+
+    center_x = center_x.to_f
+    center_y = center_y.to_f
+    radius = radius.to_f
 
     if radius <= 0
       return { success: false, errors: [I18n.t('services.circle_service.errors.radius_must_be_positive')] }

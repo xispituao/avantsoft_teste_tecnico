@@ -49,14 +49,14 @@ RSpec.describe Frame, type: :model do
   end
 
   describe 'counter cache' do
-    let(:frame) { create(:frame) }
+    let(:frame) { create(:frame, x_axis: 1000, y_axis: 1000, width: 100, height: 100) }
 
     it 'updates circles_count when circle is created' do
-      expect { create(:circle, frame: frame) }.to change { frame.reload.circles_count }.by(1)
+      expect { create(:circle, frame: frame, x_axis: 1050, y_axis: 1050, diameter: 20) }.to change { frame.reload.circles_count }.by(1)
     end
 
     it 'updates circles_count when circle is destroyed' do
-      circle = create(:circle, frame: frame)
+      circle = create(:circle, frame: frame, x_axis: 1050, y_axis: 1050, diameter: 20)
       expect { circle.destroy }.to change { frame.reload.circles_count }.by(-1)
     end
   end

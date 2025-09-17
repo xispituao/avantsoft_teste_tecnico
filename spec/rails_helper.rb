@@ -74,6 +74,14 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = false
 
+  config.before(:each, type: :request) do
+    host! 'localhost:3000'
+  end
+
+  config.before(:each, type: :rswag) do
+    host! 'localhost:3000'
+  end
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 

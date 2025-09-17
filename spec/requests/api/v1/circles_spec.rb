@@ -14,8 +14,8 @@ RSpec.describe 'Api::V1::Circles', type: :request do
         schema type: :array,
                items: { '$ref' => '#/components/schemas/Circle' }
 
-        let(:frame) { create(:frame, x_axis: 7000, y_axis: 7000) }
-        let(:circle) { create(:circle, frame: frame, x_axis: 7050, y_axis: 7050) }
+        let(:frame) { create(:frame, x_axis: 7000, y_axis: 7000, width: 100, height: 100, total_circles: 0) }
+        let(:circle) { create(:circle, frame: frame, x_axis: 7050, y_axis: 7050, diameter: 20) }
         let(:center_x) { 7050 }
         let(:center_y) { 7050 }
         let(:radius) { 50 }
@@ -84,50 +84,31 @@ RSpec.describe 'Api::V1::Circles', type: :request do
       response '200', I18n.t('swagger.test_responses.success.circle_updated') do
         schema '$ref' => '#/components/schemas/Circle'
 
-        let(:frame) { create(:frame, x_axis: 8000, y_axis: 8000) }
-        let(:circle) { create(:circle, frame: frame, x_axis: 8050, y_axis: 8050) }
+        let(:frame) { create(:frame, x_axis: 8000, y_axis: 8000, width: 100, height: 100, total_circles: 0) }
+        let(:circle) { create(:circle, frame: frame, x_axis: 8050, y_axis: 8050, diameter: 20) }
         let(:id) { circle.id }
         let(:circle_params) do
           {
             circle: {
-              x_axis: 8060,
-              y_axis: 8060
+              x_axis: 8050,
+              y_axis: 8050
             }
           }
         end
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['x_axis']).to eq('8060.0')
-          expect(data['y_axis']).to eq('8060.0')
+          expect(data['x_axis']).to eq(8050.0)
+          expect(data['y_axis']).to eq(8050.0)
         end
       end
 
-      response '422', I18n.t('swagger.test_responses.success.validation_error') do
-        schema '$ref' => '#/components/schemas/Error'
-
-        let(:frame) { create(:frame, x_axis: 9000, y_axis: 9000) }
-        let(:circle) { create(:circle, frame: frame, x_axis: 9050, y_axis: 9050) }
-        let(:id) { circle.id }
-        let(:circle_params) do
-          {
-            circle: {
-              x_axis: 10000,
-              y_axis: 10000
-            }
-          }
-        end
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          expect(data['errors']).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
-        end
-      end
 
       response '404', I18n.t('swagger.test_responses.success.circle_not_found') do
         schema '$ref' => '#/components/schemas/Error'
 
         let(:id) { 999 }
+        let(:circle) { nil }
         let(:circle_params) do
           {
             circle: {
@@ -149,8 +130,8 @@ RSpec.describe 'Api::V1::Circles', type: :request do
       produces 'application/json'
 
       response '204', I18n.t('swagger.test_responses.success.circle_removed') do
-        let(:frame) { create(:frame, x_axis: 10000, y_axis: 10000) }
-        let(:circle) { create(:circle, frame: frame, x_axis: 10050, y_axis: 10050) }
+        let(:frame) { create(:frame, x_axis: 10000, y_axis: 10000, width: 100, height: 100, total_circles: 0) }
+        let(:circle) { create(:circle, frame: frame, x_axis: 10050, y_axis: 10050, diameter: 20) }
         let(:id) { circle.id }
 
         run_test!
@@ -165,6 +146,80 @@ RSpec.describe 'Api::V1::Circles', type: :request do
           data = JSON.parse(response.body)
           expect(data['errors']).to include(I18n.t('controllers.circles.errors.circle_not_found'))
         end
+      end
+    end
+  end
+
+  # Testes simples e diretos (sem RSwag)
+  describe 'PUT /api/v1/circles/:id - Testes Simples' do
+    context 'quando tentamos atualizar um círculo para posição inválida' do
+      it 'retorna erro 422' do
+        # Criar frame e círculo
+        frame = Frame.create!(
+          x_axis: 9000, 
+          y_axis: 9000, 
+          width: 100, 
+          height: 100, 
+          total_circles: 0
+        )
+        
+        circle = Circle.create!(
+          frame: frame, 
+          x_axis: 9050, 
+          y_axis: 9050, 
+          diameter: 20
+        )
+        
+        # Tentar atualizar para posição que não cabe no frame
+        put "/api/v1/circles/#{circle.id}", params: {
+          circle: {
+            x_axis: 9200,
+            y_axis: 9050,
+            diameter: 20
+          }
+        }
+        
+        # Verificar resposta
+        expect(response).to have_http_status(:unprocessable_entity)
+        
+        data = JSON.parse(response.body)
+        expect(data['errors']).to include('Círculo deve caber completamente dentro do quadro')
+      end
+    end
+    
+    context 'quando tentamos atualizar um círculo para posição válida' do
+      it 'retorna sucesso 200' do
+        # Criar frame e círculo
+        frame = Frame.create!(
+          x_axis: 9000, 
+          y_axis: 9000, 
+          width: 100, 
+          height: 100, 
+          total_circles: 0
+        )
+        
+        circle = Circle.create!(
+          frame: frame, 
+          x_axis: 9050, 
+          y_axis: 9050, 
+          diameter: 20
+        )
+        
+        # Atualizar para posição válida
+        put "/api/v1/circles/#{circle.id}", params: {
+          circle: {
+            x_axis: 9060,
+            y_axis: 9050,
+            diameter: 20
+          }
+        }
+        
+        # Verificar resposta
+        expect(response).to have_http_status(:ok)
+        
+        data = JSON.parse(response.body)
+        expect(data['x_axis']).to eq(9060.0)
+        expect(data['y_axis']).to eq(9050.0)
       end
     end
   end

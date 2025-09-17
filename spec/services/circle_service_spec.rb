@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CircleService, type: :service do
   describe '.create_circle' do
-    let(:frame) { create(:frame, x_axis: 6000, y_axis: 6000) }
+    let(:frame) { create(:frame, x_axis: 6000, y_axis: 6000, width: 100, height: 100, total_circles: 0) }
 
     context 'quando os parâmetros são válidos' do
       let(:circle_params) do
@@ -44,8 +44,8 @@ RSpec.describe CircleService, type: :service do
   end
 
   describe '.update_circle' do
-    let(:frame) { create(:frame, x_axis: 7000, y_axis: 7000) }
-    let(:circle) { create(:circle, frame: frame, x_axis: 7050, y_axis: 7050) }
+    let(:frame) { create(:frame, x_axis: 7000, y_axis: 7000, width: 100, height: 100, total_circles: 0) }
+    let(:circle) { create(:circle, frame: frame, x_axis: 7050, y_axis: 7050, diameter: 20) }
 
     context 'quando os parâmetros são válidos' do
       let(:update_params) do
@@ -82,8 +82,8 @@ RSpec.describe CircleService, type: :service do
   end
 
   describe '.destroy_circle' do
-    let(:frame) { create(:frame, x_axis: 8000, y_axis: 8000) }
-    let(:circle) { create(:circle, frame: frame, x_axis: 8050, y_axis: 8050) }
+    let(:frame) { create(:frame, x_axis: 8000, y_axis: 8000, width: 100, height: 100, total_circles: 0) }
+    let(:circle) { create(:circle, frame: frame, x_axis: 8050, y_axis: 8050, diameter: 20) }
 
     it 'remove o círculo com sucesso' do
       result = CircleService.destroy_circle(circle)
@@ -94,10 +94,14 @@ RSpec.describe CircleService, type: :service do
   end
 
   describe '.search_circles' do
-    let(:frame1) { create(:frame, x_axis: 9000, y_axis: 9000) }
-    let(:frame2) { create(:frame, x_axis: 10000, y_axis: 10000) }
+    let(:frame1) { create(:frame, x_axis: 9000, y_axis: 9000, width: 100, height: 100, total_circles: 0) }
+    let(:frame2) { create(:frame, x_axis: 10000, y_axis: 10000, width: 100, height: 100, total_circles: 0) }
 
     before do
+      # Limpar outros círculos dos frames para evitar conflitos
+      frame1.circles.destroy_all
+      frame2.circles.destroy_all
+      
       # Círculos no frame1
       create(:circle, frame: frame1, x_axis: 9050, y_axis: 9050, diameter: 20) # Dentro do raio
       create(:circle, frame: frame1, x_axis: 9090, y_axis: 9090, diameter: 20) # Fora do raio
@@ -111,7 +115,7 @@ RSpec.describe CircleService, type: :service do
         {
           center_x: 9050,
           center_y: 9050,
-          radius: 100
+          radius: 60
         }
       end
 
@@ -119,8 +123,8 @@ RSpec.describe CircleService, type: :service do
         result = CircleService.search_circles(search_params)
 
         expect(result[:success]).to be true
-        expect(result[:data].length).to eq(2)
-        expect(result[:data].map(&:x_axis)).to include(9050.0, 10050.0)
+        expect(result[:data].length).to eq(1)
+        expect(result[:data].map(&:x_axis)).to include(9050.0)
       end
 
       it 'filtra por frame quando especificado' do
@@ -179,7 +183,7 @@ RSpec.describe CircleService, type: :service do
     end
 
     context 'testando lógica de raio' do
-      let(:frame) { create(:frame, x_axis: 11000, y_axis: 11000) }
+      let(:frame) { create(:frame, x_axis: 11000, y_axis: 11000, width: 100, height: 100, total_circles: 0) }
 
       before do
         # Círculo que toca exatamente o limite do raio

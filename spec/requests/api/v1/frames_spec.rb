@@ -62,10 +62,10 @@ RSpec.describe 'Api::V1::Frames', type: :request do
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['x_axis']).to eq('1000.0')
-          expect(data['y_axis']).to eq('1000.0')
-          expect(data['width']).to eq('100.0')
-          expect(data['height']).to eq('100.0')
+          expect(data['x_axis']).to eq(1000.0)
+          expect(data['y_axis']).to eq(1000.0)
+          expect(data['width']).to eq(100.0)
+          expect(data['height']).to eq(100.0)
         end
       end
 
@@ -77,7 +77,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
             frame: {
               x_axis: 0,
               y_axis: 0,
-              width: 100,
+              width: -100,
               height: 100
             }
           }
@@ -85,7 +85,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['errors']).to include(I18n.t('models.frame.errors.no_frame_overlap'))
+          expect(data['errors']).to include("Width deve ser maior que 0")
         end
       end
     end
@@ -101,7 +101,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
       response '200', I18n.t('swagger.responses.success.frame_details') do
         schema '$ref' => '#/components/schemas/FrameWithMetrics'
 
-        let(:frame) { create(:frame, x_axis: 2000, y_axis: 2000) }
+        let(:frame) { create(:frame, x_axis: 2000, y_axis: 2000, width: 100, height: 100, total_circles: 0) }
         let(:id) { frame.id }
 
         run_test! do |response|
@@ -128,7 +128,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
       produces 'application/json'
 
       response '204', I18n.t('swagger.test_responses.success.frame_removed') do
-        let(:frame) { create(:frame, x_axis: 3000, y_axis: 3000) }
+        let(:frame) { create(:frame, x_axis: 3000, y_axis: 3000, width: 100, height: 100, total_circles: 0) }
         let(:id) { frame.id }
 
         run_test!
@@ -137,11 +137,11 @@ RSpec.describe 'Api::V1::Frames', type: :request do
       response '422', I18n.t('swagger.test_responses.success.frame_with_circles_error') do
         schema '$ref' => '#/components/schemas/Error'
 
-        let(:frame) { create(:frame, x_axis: 4000, y_axis: 4000) }
+        let(:frame) { create(:frame, x_axis: 4000, y_axis: 4000, width: 100, height: 100, total_circles: 0) }
         let(:id) { frame.id }
 
         before do
-          create(:circle, frame: frame)
+          create(:circle, frame: frame, x_axis: 4050, y_axis: 4050, diameter: 20)
         end
 
         run_test! do |response|
@@ -188,7 +188,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
       response '201', I18n.t('swagger.test_responses.success.circle_created') do
         schema '$ref' => '#/components/schemas/Circle'
 
-        let(:frame) { create(:frame, x_axis: 5000, y_axis: 5000) }
+        let(:frame) { create(:frame, x_axis: 5000, y_axis: 5000, width: 100, height: 100, total_circles: 0) }
         let(:id) { frame.id }
         let(:circle) do
           {
@@ -202,9 +202,9 @@ RSpec.describe 'Api::V1::Frames', type: :request do
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['x_axis']).to eq('5050.0')
-          expect(data['y_axis']).to eq('5050.0')
-          expect(data['diameter']).to eq('20.0')
+          expect(data['x_axis']).to eq(5050.0)
+          expect(data['y_axis']).to eq(5050.0)
+          expect(data['diameter']).to eq(20.0)
           expect(data['frame_id']).to eq(frame.id)
         end
       end
@@ -212,7 +212,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
       response '422', I18n.t('swagger.responses.errors.validation_error') do
         schema '$ref' => '#/components/schemas/Error'
 
-        let(:frame) { create(:frame, x_axis: 6000, y_axis: 6000) }
+        let(:frame) { create(:frame, x_axis: 6000, y_axis: 6000, width: 100, height: 100, total_circles: 0) }
         let(:id) { frame.id }
         let(:circle) do
           {

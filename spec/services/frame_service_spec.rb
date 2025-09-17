@@ -49,7 +49,7 @@ RSpec.describe FrameService, type: :service do
       end
 
       before do
-        create(:frame, x_axis: 0, y_axis: 0, width: 100, height: 100)
+        create(:frame, x_axis: 0, y_axis: 0, width: 100, height: 100, total_circles: 0)
       end
 
       it 'retorna erro de validação' do
@@ -83,7 +83,7 @@ RSpec.describe FrameService, type: :service do
   end
 
   describe '.get_frame_details' do
-    let(:frame) { create(:frame, x_axis: 3000, y_axis: 3000) }
+    let(:frame) { create(:frame, x_axis: 3000, y_axis: 3000, width: 100, height: 100, total_circles: 0) }
 
     context 'quando o frame existe' do
       it 'retorna os detalhes do frame com métricas' do
@@ -125,7 +125,7 @@ RSpec.describe FrameService, type: :service do
 
   describe '.destroy_frame' do
     context 'quando o frame não tem círculos' do
-      let(:frame) { create(:frame, x_axis: 4000, y_axis: 4000) }
+      let(:frame) { create(:frame, x_axis: 4000, y_axis: 4000, width: 100, height: 100, total_circles: 0) }
 
       it 'remove o frame com sucesso' do
         result = FrameService.destroy_frame(frame)
@@ -136,10 +136,10 @@ RSpec.describe FrameService, type: :service do
     end
 
     context 'quando o frame tem círculos' do
-      let(:frame) { create(:frame, x_axis: 5000, y_axis: 5000) }
+      let(:frame) { create(:frame, x_axis: 5000, y_axis: 5000, width: 100, height: 100, total_circles: 0) }
 
       before do
-        create(:circle, frame: frame)
+        create(:circle, frame: frame, x_axis: 5050, y_axis: 5050, diameter: 20)
       end
 
       it 'não remove o frame' do
