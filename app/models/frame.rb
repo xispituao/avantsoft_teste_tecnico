@@ -13,13 +13,17 @@ class Frame < ApplicationRecord
   def no_frame_overlap
     return unless x_axis && y_axis && width && height
 
-    other_frames = Frame.where.not(id: id)
-    
-    other_frames.each do |other_frame|
-      if rectangles_overlap_or_touch?(self, other_frame)
-        errors.add(:base, I18n.t('models.frame.errors.no_frame_overlap'))
-        break
-      end
+    # Verificar sobreposição
+    overlapping_frame = Frame
+      .where.not(id: id)
+      .where(
+        "NOT (x_axis + width < ? OR x_axis > ? + ? OR y_axis + height < ? OR y_axis > ? + ?)",
+        x_axis, x_axis, width, y_axis, y_axis, height
+      )
+      .first
+
+    if overlapping_frame
+      errors.add(:base, I18n.t('models.frame.errors.no_frame_overlap'))
     end
   end
 

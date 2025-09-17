@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_17_015856) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_17_171358) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,7 +21,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_17_015856) do
     t.bigint "frame_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["frame_id", "x_axis", "y_axis"], name: "index_circles_on_frame_and_position"
     t.index ["frame_id"], name: "index_circles_on_frame_id"
+    t.index ["x_axis", "y_axis"], name: "index_circles_on_position"
   end
 
   create_table "frames", force: :cascade do |t|
@@ -37,6 +39,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_17_015856) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "circles_count", default: 0, null: false
+    t.index ["x_axis", "width"], name: "index_frames_on_x_axis_width"
+    t.index ["x_axis", "y_axis", "width", "height"], name: "index_frames_on_geometry"
+    t.index ["y_axis", "height"], name: "index_frames_on_y_axis_height"
   end
 
   add_foreign_key "circles", "frames"

@@ -53,14 +53,12 @@ class CircleService
       query = query.where(frame_id: frame_id)
     end
 
-    # Filtrar círculos completamente dentro do raio
     # Um círculo está completamente dentro do raio se:
     # - A distância do centro do círculo ao ponto central + raio do círculo <= radius
-    circles = query.select do |circle|
-      distance = Math.sqrt((circle.x_axis - center_x)**2 + (circle.y_axis - center_y)**2)
-      circle_radius = circle.diameter / 2.0
-      (distance + circle_radius) <= radius
-    end
+    circles = query.where(
+      "SQRT(POWER(circles.x_axis - ?, 2) + POWER(circles.y_axis - ?, 2)) + circles.diameter / 2.0 <= ?",
+      center_x, center_y, radius
+    )
 
     { success: true, data: circles }
   end
