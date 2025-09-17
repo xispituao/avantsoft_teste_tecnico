@@ -28,4 +28,183 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  # API error messages
+  api:
+    errors:
+      not_found: "Resource not found"
+      unprocessable_entity: "Unprocessable entity"
+      internal_server_error: "Internal server error"
+      validation_failed: "Validation failed"
+      unauthorized: "Unauthorized"
+      forbidden: "Forbidden"
+  
+  # Model-specific messages
+  activerecord:
+    errors:
+      models:
+        frame:
+          attributes:
+            x_axis:
+              blank: "can't be blank"
+              not_a_number: "is not a number"
+            y_axis:
+              blank: "can't be blank"
+              not_a_number: "is not a number"
+            width:
+              blank: "can't be blank"
+              not_a_number: "is not a number"
+              greater_than: "must be greater than %{count}"
+            height:
+              blank: "can't be blank"
+              not_a_number: "is not a number"
+              greater_than: "must be greater than %{count}"
+            total_circles:
+              blank: "can't be blank"
+              not_a_number: "is not a number"
+              greater_than_or_equal_to: "must be greater than or equal to %{count}"
+        circle:
+          attributes:
+            x_axis:
+              blank: "can't be blank"
+              not_a_number: "is not a number"
+            y_axis:
+              blank: "can't be blank"
+              not_a_number: "is not a number"
+            diameter:
+              blank: "can't be blank"
+              not_a_number: "is not a number"
+              greater_than: "must be greater than %{count}"
+            frame:
+              blank: "can't be blank"
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+        restrict_dependent_destroy:
+          has_many: "Cannot delete record because dependent %{record} exist"
+          has_one: "Cannot delete record because a dependent %{record} exists"
+  
+  # Custom model messages
+  models:
+    frame:
+      errors:
+        no_frame_overlap: "Frame cannot touch another frame"
+    circle:
+      errors:
+        circle_fits_in_frame: "Circle must fit completely within the frame"
+        no_circle_overlap: "Circle cannot touch another circle in the same frame"
+  
+  # Service messages
+  services:
+    frame_service:
+      errors:
+        frame_not_found: "Frame not found"
+        cannot_delete_with_circles: "Cannot delete frame with associated circles"
+    circle_service:
+      errors:
+        circle_not_found: "Circle not found"
+        search_params_required: "center_x, center_y and radius are required"
+        radius_must_be_positive: "radius must be greater than zero"
+  
+  # Controller messages
+  controllers:
+    frames:
+      errors:
+        frame_not_found: "Frame not found"
+    circles:
+      errors:
+        circle_not_found: "Circle not found"
+  
+  # Swagger documentation messages
+  swagger:
+    info:
+      title: "Avantsoft API V1"
+      description: "API for managing frames and circles"
+      version: "v1"
+    tags:
+      frames: "Frames"
+      circles: "Circles"
+    operations:
+      frames:
+        create: "Creates a new frame"
+        show: "Returns frame details"
+        destroy: "Removes a frame"
+        add_circle: "Adds a circle to the frame"
+      circles:
+        index: "Lists circles within a radius"
+        update: "Updates circle position"
+        destroy: "Removes a circle"
+    responses:
+      success:
+        frame_created: "Frame created successfully"
+        frame_details: "Frame details returned successfully"
+        frame_deleted: "Frame removed successfully"
+        circle_created: "Circle created successfully"
+        circle_updated: "Circle updated successfully"
+        circle_deleted: "Circle removed successfully"
+        circles_listed: "List of circles returned successfully"
+      errors:
+        validation_error: "Validation error"
+        frame_not_found: "Frame not found"
+        circle_not_found: "Circle not found"
+        radius_invalid: "Invalid radius"
+        frame_with_circles: "Error removing frame with circles"
+    parameters:
+      center_x: "Center X coordinate"
+      center_y: "Center Y coordinate"
+      radius: "Radius in centimeters"
+      frame_id: "Frame ID (optional)"
+      locale_description: "Response language. Default: pt-BR. Supported: pt-BR, en"
+    schemas:
+      frame_description: "Represents a rectangular frame in the system"
+      circle_description: "Represents a circle within a frame"
+      frame_metrics_description: "Calculated metrics of circles within a frame"
+      frame_with_metrics_description: "Frame with its circle metrics"
+      circle_search_params_description: "Parameters for searching circles by radius"
+      error_description: "API error response"
+      validation_error_description: "Validation error with specific details"
+      # Schema field descriptions
+      field_descriptions:
+        id: "Unique identifier"
+        frame_id: "ID of the frame to which the circle belongs"
+        x_axis: "X coordinate of the upper left corner of the frame"
+        y_axis: "Y coordinate of the upper left corner of the frame"
+        width: "Frame width in centimeters"
+        height: "Frame height in centimeters"
+        diameter: "Circle diameter in centimeters"
+        total_circles: "Total number of circles within the frame"
+        created_at: "Creation date and time"
+        updated_at: "Last update date and time"
+        center_x: "X coordinate of the search center"
+        center_y: "Y coordinate of the search center"
+        radius: "Search radius in centimeters"
+        frame_id_optional: "Frame ID to filter circles (optional)"
+        errors_list: "List of error messages"
+        errors_by_field: "Errors organized by field"
+        circle_center_x: "X coordinate of the circle center"
+        circle_center_y: "Y coordinate of the circle center"
+        highest_position: "Y coordinate of the highest circle (smallest Y value)"
+        lowest_position: "Y coordinate of the lowest circle (largest Y value)"
+        leftmost_position: "X coordinate of the leftmost circle (smallest X value)"
+        rightmost_position: "X coordinate of the rightmost circle (largest X value)"
+        total_circles_count: "Total number of circles in the frame"
+    server:
+      development: "Development server"
+    test_responses:
+      success:
+        frame_removed: "Frame removed successfully"
+        frame_with_circles_error: "Error removing frame with circles"
+        circle_added: "Adds a circle to the frame"
+        circle_created: "Circle created successfully"
+        circle_updated: "Circle updated successfully"
+        circle_removed: "Circle removed successfully"
+        parameters_missing: "Required parameters missing"
+        radius_invalid: "Invalid radius"
+        validation_error: "Validation error"
+        circle_not_found: "Circle not found"
+        frame_not_found: "Frame not found"
+    test_operations:
+      remove_frame: "Remove a frame"
+      update_circle: "Update a circle"
+      remove_circle: "Remove a circle"
+    test_tags:
+      frames: "Frames"
+      circles: "Circles"

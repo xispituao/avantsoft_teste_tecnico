@@ -17,61 +17,61 @@ RSpec.configure do |config|
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
       info: {
-        title: 'Avantsoft API V1',
-        version: 'v1',
-        description: 'API para gerenciamento de quadros e círculos'
+        title: I18n.t('swagger.info.title'),
+        version: I18n.t('swagger.info.version'),
+        description: I18n.t('swagger.info.description')
       },
       paths: {},
       servers: [
         {
           url: 'http://localhost:3000',
-          description: 'Servidor de desenvolvimento'
+          description: I18n.t('swagger.server.development')
         }
       ],
       components: {
         schemas: {
           Frame: {
             type: :object,
-            description: 'Representa um quadro retangular no sistema',
+            description: I18n.t('swagger.schemas.frame_description'),
             required: ['x_axis', 'y_axis', 'width', 'height'],
             properties: {
               id: { 
                 type: :integer, 
-                description: 'Identificador único do quadro',
+                description: I18n.t('swagger.schemas.field_descriptions.id'),
                 example: 1,
                 readOnly: true
               },
               x_axis: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada X do canto superior esquerdo do quadro',
+                description: I18n.t('swagger.schemas.field_descriptions.x_axis'),
                 example: 100.50,
                 minimum: 0
               },
               y_axis: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada Y do canto superior esquerdo do quadro',
+                description: I18n.t('swagger.schemas.field_descriptions.y_axis'),
                 example: 200.75,
                 minimum: 0
               },
               width: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Largura do quadro em centímetros',
+                description: I18n.t('swagger.schemas.field_descriptions.width'),
                 example: 150.00,
                 minimum: 0.01
               },
               height: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Altura do quadro em centímetros',
+                description: I18n.t('swagger.schemas.field_descriptions.height'),
                 example: 100.00,
                 minimum: 0.01
               },
               total_circles: { 
                 type: :integer, 
-                description: 'Número total de círculos dentro do quadro',
+                description: I18n.t('swagger.schemas.field_descriptions.total_circles'),
                 example: 3,
                 minimum: 0,
                 readOnly: true
@@ -79,14 +79,14 @@ RSpec.configure do |config|
               created_at: { 
                 type: :string, 
                 format: :datetime,
-                description: 'Data e hora de criação do quadro',
+                description: I18n.t('swagger.schemas.field_descriptions.created_at'),
                 example: '2025-09-17T02:42:13.630Z',
                 readOnly: true
               },
               updated_at: { 
                 type: :string, 
                 format: :datetime,
-                description: 'Data e hora da última atualização do quadro',
+                description: I18n.t('swagger.schemas.field_descriptions.updated_at'),
                 example: '2025-09-17T02:42:13.630Z',
                 readOnly: true
               }
@@ -94,52 +94,52 @@ RSpec.configure do |config|
           },
           Circle: {
             type: :object,
-            description: 'Representa um círculo dentro de um quadro',
+            description: I18n.t('swagger.schemas.circle_description'),
             required: ['x_axis', 'y_axis', 'diameter', 'frame_id'],
             properties: {
               id: { 
                 type: :integer, 
-                description: 'Identificador único do círculo',
+                description: I18n.t('swagger.schemas.field_descriptions.id'),
                 example: 1,
                 readOnly: true
               },
               x_axis: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada X do centro do círculo',
+                description: I18n.t('swagger.schemas.field_descriptions.circle_center_x'),
                 example: 125.25,
                 minimum: 0
               },
               y_axis: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada Y do centro do círculo',
+                description: I18n.t('swagger.schemas.field_descriptions.circle_center_y'),
                 example: 175.50,
                 minimum: 0
               },
               diameter: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Diâmetro do círculo em centímetros',
+                description: I18n.t('swagger.schemas.field_descriptions.diameter'),
                 example: 20.00,
                 minimum: 0.01
               },
               frame_id: { 
                 type: :integer, 
-                description: 'ID do quadro ao qual o círculo pertence',
+                description: I18n.t('swagger.schemas.field_descriptions.frame_id'),
                 example: 1
               },
               created_at: { 
                 type: :string, 
                 format: :datetime,
-                description: 'Data e hora de criação do círculo',
+                description: I18n.t('swagger.schemas.field_descriptions.created_at'),
                 example: '2025-09-17T02:42:13.630Z',
                 readOnly: true
               },
               updated_at: { 
                 type: :string, 
                 format: :datetime,
-                description: 'Data e hora da última atualização do círculo',
+                description: I18n.t('swagger.schemas.field_descriptions.updated_at'),
                 example: '2025-09-17T02:42:13.630Z',
                 readOnly: true
               }
@@ -147,39 +147,39 @@ RSpec.configure do |config|
           },
           FrameMetrics: {
             type: :object,
-            description: 'Métricas calculadas dos círculos dentro de um quadro',
+            description: I18n.t('swagger.schemas.frame_metrics_description'),
             properties: {
               total_circles: { 
                 type: :integer, 
-                description: 'Número total de círculos no quadro',
+                description: I18n.t('swagger.schemas.field_descriptions.total_circles_count'),
                 example: 3,
                 minimum: 0
               },
               highest_circle_position: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada Y do círculo mais alto (menor valor Y)',
+                description: I18n.t('swagger.schemas.field_descriptions.highest_position'),
                 example: 150.00,
                 nullable: true
               },
               lowest_circle_position: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada Y do círculo mais baixo (maior valor Y)',
+                description: I18n.t('swagger.schemas.field_descriptions.lowest_position'),
                 example: 200.00,
                 nullable: true
               },
               leftmost_circle_position: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada X do círculo mais à esquerda (menor valor X)',
+                description: I18n.t('swagger.schemas.field_descriptions.leftmost_position'),
                 example: 120.00,
                 nullable: true
               },
               rightmost_circle_position: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada X do círculo mais à direita (maior valor X)',
+                description: I18n.t('swagger.schemas.field_descriptions.rightmost_position'),
                 example: 180.00,
                 nullable: true
               }
@@ -187,7 +187,7 @@ RSpec.configure do |config|
           },
           FrameWithMetrics: {
             type: :object,
-            description: 'Quadro com suas métricas de círculos',
+            description: I18n.t('swagger.schemas.frame_with_metrics_description'),
             allOf: [
               { '$ref' => '#/components/schemas/Frame' },
               {
@@ -200,67 +200,67 @@ RSpec.configure do |config|
           },
           CircleSearchParams: {
             type: :object,
-            description: 'Parâmetros para busca de círculos por raio',
+            description: I18n.t('swagger.schemas.circle_search_params_description'),
             required: ['center_x', 'center_y', 'radius'],
             properties: {
               center_x: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada X do centro da busca',
+                description: I18n.t('swagger.schemas.field_descriptions.center_x'),
                 example: 150.00,
                 minimum: 0
               },
               center_y: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Coordenada Y do centro da busca',
+                description: I18n.t('swagger.schemas.field_descriptions.center_y'),
                 example: 175.00,
                 minimum: 0
               },
               radius: { 
                 type: :number, 
                 format: :decimal,
-                description: 'Raio de busca em centímetros',
+                description: I18n.t('swagger.schemas.field_descriptions.radius'),
                 example: 50.00,
                 minimum: 0.01
               },
               frame_id: { 
                 type: :integer, 
-                description: 'ID do quadro para filtrar círculos (opcional)',
+                description: I18n.t('swagger.schemas.field_descriptions.frame_id_optional'),
                 example: 1
               }
             }
           },
           Error: {
             type: :object,
-            description: 'Resposta de erro da API',
+            description: I18n.t('swagger.schemas.error_description'),
             required: ['errors'],
             properties: {
               errors: {
                 type: :array,
-                description: 'Lista de mensagens de erro',
+                description: I18n.t('swagger.schemas.field_descriptions.errors_list'),
                 items: { 
                   type: :string,
-                  example: 'Círculo deve caber completamente dentro do quadro'
+                  example: I18n.t('models.circle.errors.circle_fits_in_frame')
                 },
-                example: ['Círculo deve caber completamente dentro do quadro', 'Círculo não pode tocar outro círculo no mesmo quadro']
+                example: [I18n.t('models.circle.errors.circle_fits_in_frame'), I18n.t('models.circle.errors.no_circle_overlap')]
               }
             }
           },
           ValidationError: {
             type: :object,
-            description: 'Erro de validação com detalhes específicos',
+            description: I18n.t('swagger.schemas.validation_error_description'),
             properties: {
               errors: {
                 type: :object,
-                description: 'Erros organizados por campo',
+                description: I18n.t('swagger.schemas.field_descriptions.errors_by_field'),
                 additionalProperties: {
                   type: :array,
                   items: { type: :string }
                 },
                 example: {
-                  'x_axis' => ['não pode estar em branco'],
-                  'diameter' => ['deve ser maior que 0']
+                  'x_axis' => [I18n.t('activerecord.errors.models.circle.attributes.x_axis.blank')],
+                  'diameter' => [I18n.t('activerecord.errors.models.circle.attributes.diameter.greater_than', count: 0)]
                 }
               }
             }

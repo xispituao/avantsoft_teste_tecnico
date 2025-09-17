@@ -39,7 +39,7 @@ class Api::V1::CirclesController < ApplicationController
   def set_circle
     @circle = Circle.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render json: { errors: ['Círculo não encontrado'] }, status: :not_found
+    render json: { errors: [I18n.t('controllers.circles.errors.circle_not_found')] }, status: :not_found
   end
 
   def circle_params

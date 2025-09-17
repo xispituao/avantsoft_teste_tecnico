@@ -1,0 +1,181 @@
+pt-BR:
+  # Mensagens de erro da API
+  api:
+    errors:
+      not_found: "Recurso não encontrado"
+      unprocessable_entity: "Entidade não processável"
+      internal_server_error: "Erro interno do servidor"
+      validation_failed: "Falha na validação"
+      unauthorized: "Não autorizado"
+      forbidden: "Proibido"
+  
+  # Mensagens específicas dos modelos
+  activerecord:
+    errors:
+      models:
+        frame:
+          attributes:
+            x_axis:
+              blank: "não pode estar em branco"
+              not_a_number: "não é um número"
+            y_axis:
+              blank: "não pode estar em branco"
+              not_a_number: "não é um número"
+            width:
+              blank: "não pode estar em branco"
+              not_a_number: "não é um número"
+              greater_than: "deve ser maior que %{count}"
+            height:
+              blank: "não pode estar em branco"
+              not_a_number: "não é um número"
+              greater_than: "deve ser maior que %{count}"
+            total_circles:
+              blank: "não pode estar em branco"
+              not_a_number: "não é um número"
+              greater_than_or_equal_to: "deve ser maior ou igual a %{count}"
+        circle:
+          attributes:
+            x_axis:
+              blank: "não pode estar em branco"
+              not_a_number: "não é um número"
+            y_axis:
+              blank: "não pode estar em branco"
+              not_a_number: "não é um número"
+            diameter:
+              blank: "não pode estar em branco"
+              not_a_number: "não é um número"
+              greater_than: "deve ser maior que %{count}"
+            frame:
+              blank: "não pode estar em branco"
+      messages:
+        record_invalid: "A validação falhou: %{errors}"
+        restrict_dependent_destroy:
+          has_many: "Não é possível excluir o registro pois existem %{record} dependentes"
+          has_one: "Não é possível excluir o registro pois existe um %{record} dependente"
+  
+  # Mensagens customizadas dos modelos
+  models:
+    frame:
+      errors:
+        no_frame_overlap: "Quadro não pode tocar outro quadro"
+    circle:
+      errors:
+        circle_fits_in_frame: "Círculo deve caber completamente dentro do quadro"
+        no_circle_overlap: "Círculo não pode tocar outro círculo no mesmo quadro"
+  
+  # Mensagens dos services
+  services:
+    frame_service:
+      errors:
+        frame_not_found: "Quadro não encontrado"
+        cannot_delete_with_circles: "Não é possível excluir quadro com círculos associados"
+    circle_service:
+      errors:
+        circle_not_found: "Círculo não encontrado"
+        search_params_required: "center_x, center_y e radius são obrigatórios"
+        radius_must_be_positive: "radius deve ser maior que zero"
+  
+  # Mensagens dos controllers
+  controllers:
+    frames:
+      errors:
+        frame_not_found: "Quadro não encontrado"
+    circles:
+      errors:
+        circle_not_found: "Círculo não encontrado"
+  
+  # Mensagens da documentação Swagger
+  swagger:
+    info:
+      title: "API Avantsoft V1"
+      description: "API para gerenciamento de quadros e círculos"
+      version: "v1"
+    tags:
+      frames: "Quadros"
+      circles: "Círculos"
+    operations:
+      frames:
+        create: "Cria um novo quadro"
+        show: "Retorna detalhes de um quadro"
+        destroy: "Remove um quadro"
+        add_circle: "Adiciona um círculo ao quadro"
+      circles:
+        index: "Lista círculos dentro de um raio"
+        update: "Atualiza posição de um círculo"
+        destroy: "Remove um círculo"
+    responses:
+      success:
+        frame_created: "Quadro criado com sucesso"
+        frame_details: "Detalhes do quadro retornados com sucesso"
+        frame_deleted: "Quadro removido com sucesso"
+        circle_created: "Círculo criado com sucesso"
+        circle_updated: "Círculo atualizado com sucesso"
+        circle_deleted: "Círculo removido com sucesso"
+        circles_listed: "Lista de círculos retornada com sucesso"
+      errors:
+        validation_error: "Erro de validação"
+        frame_not_found: "Quadro não encontrado"
+        circle_not_found: "Círculo não encontrado"
+        radius_invalid: "Radius inválido"
+        frame_with_circles: "Erro ao remover quadro com círculos"
+    parameters:
+      center_x: "Coordenada X do centro"
+      center_y: "Coordenada Y do centro"
+      radius: "Raio em centímetros"
+      frame_id: "ID do quadro (opcional)"
+      locale_description: "Idioma da resposta. Padrão: pt-BR. Suportado: pt-BR, en"
+    schemas:
+      frame_description: "Representa um quadro retangular no sistema"
+      circle_description: "Representa um círculo dentro de um quadro"
+      frame_metrics_description: "Métricas calculadas dos círculos dentro de um quadro"
+      frame_with_metrics_description: "Quadro com suas métricas de círculos"
+      circle_search_params_description: "Parâmetros para busca de círculos por raio"
+      error_description: "Resposta de erro da API"
+      validation_error_description: "Erro de validação com detalhes específicos"
+      # Descrições de campos dos schemas
+      field_descriptions:
+        id: "Identificador único"
+        frame_id: "ID do quadro ao qual o círculo pertence"
+        x_axis: "Coordenada X do canto superior esquerdo do quadro"
+        y_axis: "Coordenada Y do canto superior esquerdo do quadro"
+        width: "Largura do quadro em centímetros"
+        height: "Altura do quadro em centímetros"
+        diameter: "Diâmetro do círculo em centímetros"
+        total_circles: "Número total de círculos dentro do quadro"
+        created_at: "Data e hora de criação"
+        updated_at: "Data e hora da última atualização"
+        center_x: "Coordenada X do centro da busca"
+        center_y: "Coordenada Y do centro da busca"
+        radius: "Raio de busca em centímetros"
+        frame_id_optional: "ID do quadro para filtrar círculos (opcional)"
+        errors_list: "Lista de mensagens de erro"
+        errors_by_field: "Erros organizados por campo"
+        circle_center_x: "Coordenada X do centro do círculo"
+        circle_center_y: "Coordenada Y do centro do círculo"
+        highest_position: "Coordenada Y do círculo mais alto (menor valor Y)"
+        lowest_position: "Coordenada Y do círculo mais baixo (maior valor Y)"
+        leftmost_position: "Coordenada X do círculo mais à esquerda (menor valor X)"
+        rightmost_position: "Coordenada X do círculo mais à direita (maior valor X)"
+        total_circles_count: "Número total de círculos no quadro"
+    server:
+      development: "Servidor de desenvolvimento"
+    test_responses:
+      success:
+        frame_removed: "Quadro removido com sucesso"
+        frame_with_circles_error: "Erro ao remover quadro com círculos"
+        circle_added: "Adiciona um círculo ao quadro"
+        circle_created: "Círculo criado com sucesso"
+        circle_updated: "Círculo atualizado com sucesso"
+        circle_removed: "Círculo removido com sucesso"
+        parameters_missing: "Parâmetros obrigatórios ausentes"
+        radius_invalid: "Radius inválido"
+        validation_error: "Erro de validação"
+        circle_not_found: "Círculo não encontrado"
+        frame_not_found: "Quadro não encontrado"
+    test_operations:
+      remove_frame: "Remove um quadro"
+      update_circle: "Atualiza um círculo"
+      remove_circle: "Remove um círculo"
+    test_tags:
+      frames: "Frames"
+      circles: "Circles"

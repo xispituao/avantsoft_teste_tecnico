@@ -19,7 +19,7 @@ class Frame < ApplicationRecord
     other_frames.each do |other_frame|
       # Verificar se os retângulos se intersectam ou encostam
       if rectangles_overlap_or_touch?(self, other_frame)
-        errors.add(:base, "Quadro não pode tocar outro quadro")
+        errors.add(:base, I18n.t('models.frame.errors.no_frame_overlap'))
         break
       end
     end

@@ -19,7 +19,7 @@ class Circle < ApplicationRecord
        x_axis + radius > frame.x_axis + frame.width ||
        y_axis - radius < frame.y_axis ||
        y_axis + radius > frame.y_axis + frame.height
-      errors.add(:base, "Círculo deve caber completamente dentro do quadro")
+      errors.add(:base, I18n.t('models.circle.errors.circle_fits_in_frame'))
     end
   end
 
@@ -35,7 +35,7 @@ class Circle < ApplicationRecord
       
       # Círculos se tocam se a distância entre centros é menor ou igual à soma dos raios
       if distance <= min_distance
-        errors.add(:base, "Círculo não pode tocar outro círculo no mesmo quadro")
+        errors.add(:base, I18n.t('models.circle.errors.no_circle_overlap'))
         break
       end
     end

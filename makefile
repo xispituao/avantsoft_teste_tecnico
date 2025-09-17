@@ -111,3 +111,9 @@ test-staging:
 
 swagger:
 	docker compose -f docker-compose.development.yml --env-file .env.development exec app bundle exec rake rswag:specs:swaggerize
+
+docs:
+	@echo "Gerando documentação Swagger..."
+	docker compose -f docker-compose.development.yml --env-file .env.development exec app bundle exec rake rswag:specs:swaggerize
+	@echo "Documentação gerada com sucesso!"
+	@echo "Acesse: http://localhost:3000/api-docs"

@@ -2,8 +2,8 @@ require 'swagger_helper'
 
 RSpec.describe 'Api::V1::Frames', type: :request do
   path '/api/v1/frames' do
-    post 'Cria um novo quadro' do
-      tags 'Frames'
+    post I18n.t('swagger.operations.frames.create') do
+      tags I18n.t('swagger.tags.frames')
       consumes 'application/json'
       produces 'application/json'
       parameter name: :frame, in: :body, schema: {
@@ -46,7 +46,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
         }
       }
 
-      response '201', 'Quadro criado com sucesso' do
+      response '201', I18n.t('swagger.responses.success.frame_created') do
         schema '$ref' => '#/components/schemas/Frame'
 
         let(:frame) do
@@ -69,7 +69,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
         end
       end
 
-      response '422', 'Erro de validação' do
+      response '422', I18n.t('swagger.responses.errors.validation_error') do
         schema '$ref' => '#/components/schemas/Error'
 
         let(:frame) do
@@ -85,7 +85,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['errors']).to include('Quadro não pode tocar outro quadro')
+          expect(data['errors']).to include(I18n.t('models.frame.errors.no_frame_overlap'))
         end
       end
     end
@@ -94,11 +94,11 @@ RSpec.describe 'Api::V1::Frames', type: :request do
   path '/api/v1/frames/{id}' do
     parameter name: :id, in: :path, type: :integer
 
-    get 'Retorna detalhes de um quadro' do
-      tags 'Frames'
+    get I18n.t('swagger.operations.frames.show') do
+      tags I18n.t('swagger.tags.frames')
       produces 'application/json'
 
-      response '200', 'Detalhes do quadro retornados com sucesso' do
+      response '200', I18n.t('swagger.responses.success.frame_details') do
         schema '$ref' => '#/components/schemas/FrameWithMetrics'
 
         let(:frame) { create(:frame, x_axis: 2000, y_axis: 2000) }
@@ -111,30 +111,30 @@ RSpec.describe 'Api::V1::Frames', type: :request do
         end
       end
 
-      response '404', 'Quadro não encontrado' do
+      response '404', I18n.t('swagger.responses.errors.frame_not_found') do
         schema '$ref' => '#/components/schemas/Error'
 
         let(:id) { 999 }
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['errors']).to include('Quadro não encontrado')
+          expect(data['errors']).to include(I18n.t('controllers.frames.errors.frame_not_found'))
         end
       end
     end
 
-    delete 'Remove um quadro' do
-      tags 'Frames'
+    delete I18n.t('swagger.test_operations.remove_frame') do
+      tags I18n.t('swagger.test_tags.frames')
       produces 'application/json'
 
-      response '204', 'Quadro removido com sucesso' do
+      response '204', I18n.t('swagger.test_responses.success.frame_removed') do
         let(:frame) { create(:frame, x_axis: 3000, y_axis: 3000) }
         let(:id) { frame.id }
 
         run_test!
       end
 
-      response '422', 'Erro ao remover quadro com círculos' do
+      response '422', I18n.t('swagger.test_responses.success.frame_with_circles_error') do
         schema '$ref' => '#/components/schemas/Error'
 
         let(:frame) { create(:frame, x_axis: 4000, y_axis: 4000) }
@@ -146,18 +146,18 @@ RSpec.describe 'Api::V1::Frames', type: :request do
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['errors']).to include('Não é possível excluir quadro com círculos associados')
+          expect(data['errors']).to include(I18n.t('services.frame_service.errors.cannot_delete_with_circles'))
         end
       end
 
-      response '404', 'Quadro não encontrado' do
+      response '404', I18n.t('swagger.responses.errors.frame_not_found') do
         schema '$ref' => '#/components/schemas/Error'
 
         let(:id) { 999 }
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['errors']).to include('Quadro não encontrado')
+          expect(data['errors']).to include(I18n.t('controllers.frames.errors.frame_not_found'))
         end
       end
     end
@@ -166,8 +166,8 @@ RSpec.describe 'Api::V1::Frames', type: :request do
   path '/api/v1/frames/{id}/circles' do
     parameter name: :id, in: :path, type: :integer
 
-    post 'Adiciona um círculo ao quadro' do
-      tags 'Frames'
+    post I18n.t('swagger.test_responses.success.circle_added') do
+      tags I18n.t('swagger.test_tags.frames')
       consumes 'application/json'
       produces 'application/json'
       parameter name: :circle, in: :body, schema: {
@@ -185,7 +185,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
         }
       }
 
-      response '201', 'Círculo criado com sucesso' do
+      response '201', I18n.t('swagger.test_responses.success.circle_created') do
         schema '$ref' => '#/components/schemas/Circle'
 
         let(:frame) { create(:frame, x_axis: 5000, y_axis: 5000) }
@@ -209,7 +209,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
         end
       end
 
-      response '422', 'Erro de validação' do
+      response '422', I18n.t('swagger.responses.errors.validation_error') do
         schema '$ref' => '#/components/schemas/Error'
 
         let(:frame) { create(:frame, x_axis: 6000, y_axis: 6000) }
@@ -226,11 +226,11 @@ RSpec.describe 'Api::V1::Frames', type: :request do
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['errors']).to include('Círculo deve caber completamente dentro do quadro')
+          expect(data['errors']).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
         end
       end
 
-      response '404', 'Quadro não encontrado' do
+      response '404', I18n.t('swagger.responses.errors.frame_not_found') do
         schema '$ref' => '#/components/schemas/Error'
 
         let(:id) { 999 }
@@ -246,7 +246,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data['errors']).to include('Quadro não encontrado')
+          expect(data['errors']).to include(I18n.t('controllers.frames.errors.frame_not_found'))
         end
       end
     end

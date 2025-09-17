@@ -52,7 +52,7 @@ class Api::V1::FramesController < ApplicationController
   def set_frame
     @frame = Frame.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render json: { errors: ['Quadro não encontrado'] }, status: :not_found
+    render json: { errors: [I18n.t('controllers.frames.errors.frame_not_found')] }, status: :not_found
   end
 
   def frame_params

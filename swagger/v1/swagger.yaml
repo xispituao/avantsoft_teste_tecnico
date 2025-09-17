@@ -1,7 +1,7 @@
 ---
 openapi: 3.0.1
 info:
-  title: Avantsoft API V1
+  title: API Avantsoft V1
   version: v1
   description: API para gerenciamento de quadros e círculos
 paths:
@@ -9,7 +9,7 @@ paths:
     get:
       summary: Lista círculos dentro de um raio
       tags:
-      - Circles
+      - Círculos
       parameters:
       - name: center_x
         in: query
@@ -113,7 +113,7 @@ paths:
     post:
       summary: Cria um novo quadro
       tags:
-      - Frames
+      - Quadros
       parameters: []
       responses:
         '201':
@@ -190,7 +190,7 @@ paths:
     get:
       summary: Retorna detalhes de um quadro
       tags:
-      - Frames
+      - Quadros
       responses:
         '200':
           description: Detalhes do quadro retornados com sucesso
@@ -280,6 +280,18 @@ servers:
 - url: http://localhost:3000
   description: Servidor de desenvolvimento
 components:
+  parameters:
+    LocaleParam:
+      in: query
+      name: locale
+      description: 'Idioma da resposta. Padrão: pt-BR. Suportado: pt-BR, en'
+      required: false
+      schema:
+        type: string
+        enum:
+        - pt-BR
+        - en
+        default: pt-BR
   schemas:
     Frame:
       type: object
@@ -292,7 +304,7 @@ components:
       properties:
         id:
           type: integer
-          description: Identificador único do quadro
+          description: Identificador único
           example: 1
           readOnly: true
         x_axis:
@@ -328,13 +340,13 @@ components:
         created_at:
           type: string
           format: datetime
-          description: Data e hora de criação do quadro
+          description: Data e hora de criação
           example: '2025-09-17T02:42:13.630Z'
           readOnly: true
         updated_at:
           type: string
           format: datetime
-          description: Data e hora da última atualização do quadro
+          description: Data e hora da última atualização
           example: '2025-09-17T02:42:13.630Z'
           readOnly: true
     Circle:
@@ -348,7 +360,7 @@ components:
       properties:
         id:
           type: integer
-          description: Identificador único do círculo
+          description: Identificador único
           example: 1
           readOnly: true
         x_axis:
@@ -376,13 +388,13 @@ components:
         created_at:
           type: string
           format: datetime
-          description: Data e hora de criação do círculo
+          description: Data e hora de criação
           example: '2025-09-17T02:42:13.630Z'
           readOnly: true
         updated_at:
           type: string
           format: datetime
-          description: Data e hora da última atualização do círculo
+          description: Data e hora da última atualização
           example: '2025-09-17T02:42:13.630Z'
           readOnly: true
     FrameMetrics:

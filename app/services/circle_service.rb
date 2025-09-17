@@ -21,7 +21,7 @@ class CircleService
     if circle.destroy
       { success: true }
     else
-      { success: false, errors: ['Erro ao excluir círculo'] }
+      { success: false, errors: [I18n.t('services.circle_service.errors.circle_not_found')] }
     end
   end
 
@@ -33,11 +33,11 @@ class CircleService
     frame_id = params[:frame_id]
 
     if center_x.nil? || center_y.nil? || radius.nil?
-      return { success: false, errors: ['center_x, center_y e radius são obrigatórios'] }
+      return { success: false, errors: [I18n.t('services.circle_service.errors.search_params_required')] }
     end
 
     if radius <= 0
-      return { success: false, errors: ['radius deve ser maior que zero'] }
+      return { success: false, errors: [I18n.t('services.circle_service.errors.radius_must_be_positive')] }
     end
 
     # Construir query base

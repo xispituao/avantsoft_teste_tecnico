@@ -17,7 +17,7 @@ class FrameService
   end
 
   def self.get_frame_details(frame)
-    return { success: false, errors: ['Quadro não encontrado'] } unless frame
+    return { success: false, errors: [I18n.t('services.frame_service.errors.frame_not_found')] } unless frame
     
     # Calcular métricas dos círculos
     circles = frame.circles
@@ -34,10 +34,10 @@ class FrameService
   end
 
   def self.destroy_frame(frame)
-    return { success: false, errors: ['Quadro não encontrado'] } unless frame
+    return { success: false, errors: [I18n.t('services.frame_service.errors.frame_not_found')] } unless frame
     
     if frame.circles.any?
-      { success: false, errors: ['Não é possível excluir quadro com círculos associados'] }
+      { success: false, errors: [I18n.t('services.frame_service.errors.cannot_delete_with_circles')] }
     else
       frame.destroy
       { success: true }
