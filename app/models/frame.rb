@@ -13,11 +13,9 @@ class Frame < ApplicationRecord
   def no_frame_overlap
     return unless x_axis && y_axis && width && height
 
-    # Buscar outros quadros
     other_frames = Frame.where.not(id: id)
     
     other_frames.each do |other_frame|
-      # Verificar se os retângulos se intersectam ou encostam
       if rectangles_overlap_or_touch?(self, other_frame)
         errors.add(:base, I18n.t('models.frame.errors.no_frame_overlap'))
         break
@@ -26,13 +24,6 @@ class Frame < ApplicationRecord
   end
 
   def rectangles_overlap_or_touch?(frame1, frame2)
-    # Verificar se os retângulos se intersectam ou encostam
-    # Dois retângulos se intersectam se:
-    # - Um não está completamente à esquerda do outro
-    # - Um não está completamente à direita do outro
-    # - Um não está completamente acima do outro
-    # - Um não está completamente abaixo do outro
-    
     frame1_left = frame1.x_axis
     frame1_right = frame1.x_axis + frame1.width
     frame1_top = frame1.y_axis
@@ -42,9 +33,8 @@ class Frame < ApplicationRecord
     frame2_right = frame2.x_axis + frame2.width
     frame2_top = frame2.y_axis
     frame2_bottom = frame2.y_axis + frame2.height
-    
-    # Verificar sobreposição (incluindo encostar)
-    # Dois retângulos se intersectam se NÃO há separação entre eles
+
+    # Retorna true se os retângulos se sobrepõem ou se tocam
     !(frame1_right < frame2_left || frame1_left > frame2_right ||
       frame1_bottom < frame2_top || frame1_top > frame2_bottom)
   end

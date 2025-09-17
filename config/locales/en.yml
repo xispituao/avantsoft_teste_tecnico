@@ -119,40 +119,6 @@ en:
       title: "Avantsoft API V1"
       description: "API for managing frames and circles"
       version: "v1"
-    tags:
-      frames: "Frames"
-      circles: "Circles"
-    operations:
-      frames:
-        create: "Creates a new frame"
-        show: "Returns frame details"
-        destroy: "Removes a frame"
-        add_circle: "Adds a circle to the frame"
-      circles:
-        index: "Lists circles within a radius"
-        update: "Updates circle position"
-        destroy: "Removes a circle"
-    responses:
-      success:
-        frame_created: "Frame created successfully"
-        frame_details: "Frame details returned successfully"
-        frame_deleted: "Frame removed successfully"
-        circle_created: "Circle created successfully"
-        circle_updated: "Circle updated successfully"
-        circle_deleted: "Circle removed successfully"
-        circles_listed: "List of circles returned successfully"
-      errors:
-        validation_error: "Validation error"
-        frame_not_found: "Frame not found"
-        circle_not_found: "Circle not found"
-        radius_invalid: "Invalid radius"
-        frame_with_circles: "Error removing frame with circles"
-    parameters:
-      center_x: "Center X coordinate"
-      center_y: "Center Y coordinate"
-      radius: "Radius in centimeters"
-      frame_id: "Frame ID (optional)"
-      locale_description: "Response language. Default: pt-BR. Supported: pt-BR, en"
     schemas:
       frame_description: "Represents a rectangular frame in the system"
       circle_description: "Represents a circle within a frame"
@@ -188,23 +154,3 @@ en:
         total_circles_count: "Total number of circles in the frame"
     server:
       development: "Development server"
-    test_responses:
-      success:
-        frame_removed: "Frame removed successfully"
-        frame_with_circles_error: "Error removing frame with circles"
-        circle_added: "Adds a circle to the frame"
-        circle_created: "Circle created successfully"
-        circle_updated: "Circle updated successfully"
-        circle_removed: "Circle removed successfully"
-        parameters_missing: "Required parameters missing"
-        radius_invalid: "Invalid radius"
-        validation_error: "Validation error"
-        circle_not_found: "Circle not found"
-        frame_not_found: "Frame not found"
-    test_operations:
-      remove_frame: "Remove a frame"
-      update_circle: "Update a circle"
-      remove_circle: "Remove a circle"
-    test_tags:
-      frames: "Frames"
-      circles: "Circles"

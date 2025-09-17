@@ -90,40 +90,6 @@ pt-BR:
       title: "API Avantsoft V1"
       description: "API para gerenciamento de quadros e círculos"
       version: "v1"
-    tags:
-      frames: "Quadros"
-      circles: "Círculos"
-    operations:
-      frames:
-        create: "Cria um novo quadro"
-        show: "Retorna detalhes de um quadro"
-        destroy: "Remove um quadro"
-        add_circle: "Adiciona um círculo ao quadro"
-      circles:
-        index: "Lista círculos dentro de um raio"
-        update: "Atualiza posição de um círculo"
-        destroy: "Remove um círculo"
-    responses:
-      success:
-        frame_created: "Quadro criado com sucesso"
-        frame_details: "Detalhes do quadro retornados com sucesso"
-        frame_deleted: "Quadro removido com sucesso"
-        circle_created: "Círculo criado com sucesso"
-        circle_updated: "Círculo atualizado com sucesso"
-        circle_deleted: "Círculo removido com sucesso"
-        circles_listed: "Lista de círculos retornada com sucesso"
-      errors:
-        validation_error: "Erro de validação"
-        frame_not_found: "Quadro não encontrado"
-        circle_not_found: "Círculo não encontrado"
-        radius_invalid: "Radius inválido"
-        frame_with_circles: "Erro ao remover quadro com círculos"
-    parameters:
-      center_x: "Coordenada X do centro"
-      center_y: "Coordenada Y do centro"
-      radius: "Raio em centímetros"
-      frame_id: "ID do quadro (opcional)"
-      locale_description: "Idioma da resposta. Padrão: pt-BR. Suportado: pt-BR, en"
     schemas:
       frame_description: "Representa um quadro retangular no sistema"
       circle_description: "Representa um círculo dentro de um quadro"
@@ -159,23 +125,3 @@ pt-BR:
         total_circles_count: "Número total de círculos no quadro"
     server:
       development: "Servidor de desenvolvimento"
-    test_responses:
-      success:
-        frame_removed: "Quadro removido com sucesso"
-        frame_with_circles_error: "Erro ao remover quadro com círculos"
-        circle_added: "Adiciona um círculo ao quadro"
-        circle_created: "Círculo criado com sucesso"
-        circle_updated: "Círculo atualizado com sucesso"
-        circle_removed: "Círculo removido com sucesso"
-        parameters_missing: "Parâmetros obrigatórios ausentes"
-        radius_invalid: "Radius inválido"
-        validation_error: "Erro de validação"
-        circle_not_found: "Círculo não encontrado"
-        frame_not_found: "Quadro não encontrado"
-    test_operations:
-      remove_frame: "Remove um quadro"
-      update_circle: "Atualiza um círculo"
-      remove_circle: "Remove um círculo"
-    test_tags:
-      frames: "Frames"
-      circles: "Circles"

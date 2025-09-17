@@ -7,9 +7,9 @@ info:
 paths:
   "/api/v1/circles":
     get:
-      summary: Lista círculos dentro de um raio
+      summary: Lista círculos
       tags:
-      - Círculos
+      - Circles
       parameters:
       - name: center_x
         in: query
@@ -26,7 +26,7 @@ paths:
       - name: radius
         in: query
         required: true
-        description: Raio em centímetros
+        description: Raio de busca
         schema:
           type: number
       - name: frame_id
@@ -45,7 +45,7 @@ paths:
                 items:
                   "$ref": "#/components/schemas/Circle"
         '422':
-          description: Radius inválido
+          description: Raio inválido
           content:
             application/json:
               schema:
@@ -58,7 +58,7 @@ paths:
       schema:
         type: integer
     put:
-      summary: Atualiza um círculo
+      summary: Atualiza círculo
       tags:
       - Circles
       parameters: []
@@ -69,12 +69,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Circle"
-        '422':
-          description: Erro de validação
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
         '404':
           description: Círculo não encontrado
           content:
@@ -97,7 +91,7 @@ paths:
                     diameter:
                       type: number
     delete:
-      summary: Remove um círculo
+      summary: Remove círculo
       tags:
       - Circles
       responses:
@@ -111,9 +105,9 @@ paths:
                 "$ref": "#/components/schemas/Error"
   "/api/v1/frames":
     post:
-      summary: Cria um novo quadro
+      summary: Cria quadro
       tags:
-      - Quadros
+      - Frames
       parameters: []
       responses:
         '201':
@@ -188,12 +182,12 @@ paths:
       schema:
         type: integer
     get:
-      summary: Retorna detalhes de um quadro
+      summary: Mostra quadro
       tags:
-      - Quadros
+      - Frames
       responses:
         '200':
-          description: Detalhes do quadro retornados com sucesso
+          description: Detalhes do quadro
           content:
             application/json:
               schema:
@@ -205,7 +199,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Error"
     delete:
-      summary: Remove um quadro
+      summary: Remove quadro
       tags:
       - Frames
       responses:
@@ -231,7 +225,7 @@ paths:
       schema:
         type: integer
     post:
-      summary: Adiciona um círculo ao quadro
+      summary: Adiciona círculo ao quadro
       tags:
       - Frames
       parameters: []
@@ -280,18 +274,6 @@ servers:
 - url: http://localhost:3000
   description: Servidor de desenvolvimento
 components:
-  parameters:
-    LocaleParam:
-      in: query
-      name: locale
-      description: 'Idioma da resposta. Padrão: pt-BR. Suportado: pt-BR, en'
-      required: false
-      schema:
-        type: string
-        enum:
-        - pt-BR
-        - en
-        default: pt-BR
   schemas:
     Frame:
       type: object
