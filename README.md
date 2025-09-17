@@ -4,6 +4,21 @@
 
 Este é um projeto Rails API desenvolvido como teste técnico para a AvantSoft. A aplicação gerencia **Frames** (quadros) e **Circles** (círculos) com validações geométricas avançadas para evitar sobreposições e garantir que os círculos se encaixem perfeitamente dentro dos quadros.
 
+## 🏗️ Base do Projeto
+
+Este projeto foi criado utilizando o template de minha autoria chamado **[Rails Project Builder](https://github.com/xispituao/rails_project_builder)**, um template completo e testado para criar projetos Rails modernos com Docker e PostgreSQL.
+
+### **O que foi utilizado do template:**
+
+- **🐳 Configuração Docker**: Dockerfiles e docker-compose configurados para desenvolvimento, staging e produção
+- **📦 Estrutura Rails**: `rails new` com configurações otimizadas para API
+- **🗄️ PostgreSQL**: Configuração automática do banco de dados
+- **🔧 Makefile**: Comandos automatizados para desenvolvimento
+- **🌍 Multi-ambiente**: Suporte a desenvolvimento, staging e produção
+- **✅ Zero-config**: Setup automático sem configuração manual
+
+O template original fornece uma base sólida e testada, permitindo focar no desenvolvimento das funcionalidades específicas do teste técnico sem se preocupar com configurações de infraestrutura.
+
 ### 🎨 Funcionalidades Principais
 
 - **📦 Gestão de Frames**: Criação e gerenciamento de quadros com dimensões personalizadas
@@ -52,7 +67,7 @@ make dev
 # Swagger: http://localhost:3000/api-docs
 ```
 
-### **📋 Comandos Disponíveis**
+### **📋 Comandos Disponíveis Principais**
 
 ```bash
 # 🏗️ Desenvolvimento
@@ -65,6 +80,7 @@ make bash             # Abre bash no container
 # 🧪 Testes
 make test             # Executa todos os testes
 make swagger          # Gera documentação Swagger
+make docs             # Alias para o make swagger
 
 # 🗄️ Banco de Dados
 make migrate          # Executa migrações
@@ -113,13 +129,6 @@ POST   /api/v1/circles          # Cria novo círculo
 GET    /api/v1/circles/:id      # Mostra círculo específico
 PUT    /api/v1/circles/:id      # Atualiza círculo
 DELETE /api/v1/circles/:id      # Remove círculo
-```
-
-## 🧪 Executando Testes
-
-```bash
-# Executar todos os testes
-make test
 ```
 
 ## 📚 Documentação da API
