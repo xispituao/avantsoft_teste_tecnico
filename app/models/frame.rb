@@ -1,5 +1,6 @@
 class Frame < ApplicationRecord
   has_many :circles
+  accepts_nested_attributes_for :circles, allow_destroy: true, reject_if: :all_blank
 
   validates :x_axis, presence: true, numericality: true
   validates :y_axis, presence: true, numericality: true

@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :frame do
-    sequence(:x_axis) { |n| n * 200 }
-    sequence(:y_axis) { |n| n * 200 }
+    sequence(:x_axis) { |n| n * 1000 }
+    sequence(:y_axis) { |n| n * 1000 }
     width { 100 }
     height { 100 }
     total_circles { 0 }

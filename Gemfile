@@ -54,6 +54,9 @@ group :development, :test do
   # Shoulda Matchers for RSpec [https://github.com/thoughtbot/shoulda-matchers]
   gem "shoulda-matchers"
 
+  # Database Cleaner for test isolation [https://github.com/DatabaseCleaner/database_cleaner]
+  gem "database_cleaner-active_record"
+
   # Swagger/OpenAPI documentation [https://github.com/rswag/rswag]
   gem "rswag"
   gem "rswag-specs"
