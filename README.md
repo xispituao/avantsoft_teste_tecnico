@@ -8,7 +8,7 @@ Este é um projeto Rails API desenvolvido como teste técnico para a AvantSoft. 
 
 - **📦 Gestão de Frames**: Criação e gerenciamento de quadros com dimensões personalizadas
 - **⭕ Gestão de Circles**: Adição de círculos dentro dos quadros com validações geométricas
-- **🔍 Validações Inteligentes**: 
+- **🔍 Validações**: 
   - Círculos não podem sair dos limites do quadro
   - Círculos não podem se sobrepor
   - Quadros não podem se sobrepor
@@ -22,19 +22,14 @@ Este é um projeto Rails API desenvolvido como teste técnico para a AvantSoft. 
 - **Ruby 3.4.2** - Linguagem principal
 - **Rails 8.0.1** - Framework web
 - **PostgreSQL 17.6** - Banco de dados
-- **Puma** - Servidor web
 
 ### **Desenvolvimento & Testes**
 - **RSpec** - Framework de testes
 - **Factory Bot** - Criação de dados de teste
-- **Shoulda Matchers** - Matchers para testes Rails
-- **Database Cleaner** - Limpeza de banco entre testes
-- **Rswag** - Documentação Swagger/OpenAPI
 
 ### **Infraestrutura**
 - **Docker & Docker Compose** - Containerização
 - **Makefile** - Automação de comandos
-- **Multi-ambiente** - Development, Staging, Production
 
 ## 🚀 Como Executar o Projeto
 
@@ -77,10 +72,6 @@ make migrate          # Executa migrações
 # 🧹 Limpeza
 make clean            # Remove containers e volumes
 make down             # Para containers
-
-# 🚀 Produção
-make prod             # Inicia ambiente de produção
-make staging          # Inicia ambiente de staging
 ```
 
 ## 📊 Estrutura do Banco de Dados
@@ -129,43 +120,13 @@ DELETE /api/v1/circles/:id      # Remove círculo
 ```bash
 # Executar todos os testes
 make test
-
-# Executar testes específicos
-docker compose -f docker-compose.development.yml --env-file .env.development exec app bundle exec rspec spec/models/
-docker compose -f docker-compose.development.yml --env-file .env.development exec app bundle exec rspec spec/requests/
 ```
 
 ## 📚 Documentação da API
 
 A documentação Swagger está disponível em:
-- **URL**: `http://localhost:3000/api-docs`
-- **Geração**: `make swagger`
-
-## 🔧 Configuração de Ambientes
-
-### **Development**
-- Arquivo: `.env.development` (criado automaticamente)
-- Banco: PostgreSQL local
-- Logs: Detalhados
-- Assets: Não compilados
-
-### **Staging/Production**
-- Variáveis de ambiente do sistema
-- Assets pré-compilados
-- Configurações otimizadas
-
-## 🐳 Docker & Volumes
-
-### **Volumes Otimizados**
-- **Código fonte**: Mapeado para desenvolvimento ativo
-- **Gems cache**: Volume persistente para dependências
-- **Banco de dados**: Volume persistente para dados
-
-### **Cache de Dependências**
-O projeto foi otimizado para evitar reinstalação constante de gems:
-- Volume nomeado `gems_cache` para persistência
-- Configuração otimizada do Bundle
-- PATH configurado corretamente
+- **URL**: `http://localhost:3000/api-docs/index.html`
+- **Geração**: `make docs`
 
 ## 🌍 Internacionalização
 
@@ -174,22 +135,3 @@ O projeto suporta múltiplos idiomas:
 - **Inglês (en)**: Idioma secundário
 
 Mensagens de erro e validações são traduzidas automaticamente.
-
-## 📁 Estrutura do Projeto
-
-```
-avantsoft_teste_tecnico/
-├── app/
-│   ├── controllers/api/v1/    # Controllers da API
-│   ├── models/                # Modelos (Frame, Circle)
-│   ├── serializers/           # Serializadores JSON
-│   └── services/              # Serviços de negócio
-├── config/
-│   ├── environments/          # Configurações por ambiente
-│   └── locales/               # Arquivos de tradução
-├── spec/                      # Testes RSpec
-├── swagger/                   # Documentação Swagger
-├── docker-compose.*.yml       # Configurações Docker
-├── Dockerfile.*               # Imagens Docker
-└── makefile                   # Comandos automatizados
-```
