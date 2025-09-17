@@ -6,7 +6,7 @@ class Api::V1::CirclesController < ApplicationController
     result = CircleService.search_circles(search_params)
     
     if result[:success]
-      render json: result[:data].map { |circle| CircleSerializer.new(circle).as_json }, status: :ok
+      render json: result[:data], each_serializer: CircleSerializer, status: :ok
     else
       render json: { errors: result[:errors] }, status: :unprocessable_entity
     end
@@ -17,7 +17,7 @@ class Api::V1::CirclesController < ApplicationController
     result = CircleService.update_circle(@circle, circle_params)
     
     if result[:success]
-      render json: CircleSerializer.new(result[:data]).as_json, status: :ok
+      render json: result[:data], serializer: CircleSerializer, status: :ok
     else
       render json: { errors: result[:errors] }, status: :unprocessable_entity
     end

@@ -6,7 +6,7 @@ class Api::V1::FramesController < ApplicationController
     result = FrameService.create_frame(frame_params)
     
     if result[:success]
-      render json: FrameSerializer.new(result[:data]).as_json, status: :created
+      render json: result[:data], serializer: FrameSerializer, status: :created
     else
       render json: { errors: result[:errors] }, status: :unprocessable_entity
     end
@@ -41,7 +41,7 @@ class Api::V1::FramesController < ApplicationController
     result = CircleService.create_circle(@frame, circle_params)
     
     if result[:success]
-      render json: CircleSerializer.new(result[:data]).as_json, status: :created
+      render json: result[:data], serializer: CircleSerializer, status: :created
     else
       render json: { errors: result[:errors] }, status: :unprocessable_entity
     end

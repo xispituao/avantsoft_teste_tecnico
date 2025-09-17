@@ -1,17 +1,15 @@
-class CircleSerializer
-  def initialize(circle)
-    @circle = circle
+class CircleSerializer < ActiveModel::Serializer
+  attributes :id, :x_axis, :y_axis, :diameter, :frame_id, :created_at, :updated_at
+
+  def x_axis
+    object.x_axis.to_f
   end
 
-  def as_json
-    {
-      id: @circle.id,
-      x_axis: @circle.x_axis.to_f,
-      y_axis: @circle.y_axis.to_f,
-      diameter: @circle.diameter.to_f,
-      frame_id: @circle.frame_id,
-      created_at: @circle.created_at,
-      updated_at: @circle.updated_at
-    }
+  def y_axis
+    object.y_axis.to_f
+  end
+
+  def diameter
+    object.diameter.to_f
   end
 end

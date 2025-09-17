@@ -1,18 +1,23 @@
-class FrameSerializer
-  def initialize(frame)
-    @frame = frame
+class FrameSerializer < ActiveModel::Serializer
+  attributes :id, :x_axis, :y_axis, :width, :height, :total_circles, :created_at, :updated_at
+
+  def x_axis
+    object.x_axis.to_f
   end
 
-  def as_json
-    {
-      id: @frame.id,
-      x_axis: @frame.x_axis.to_f,
-      y_axis: @frame.y_axis.to_f,
-      width: @frame.width.to_f,
-      height: @frame.height.to_f,
-      total_circles: @frame.circles_count,
-      created_at: @frame.created_at,
-      updated_at: @frame.updated_at
-    }
+  def y_axis
+    object.y_axis.to_f
+  end
+
+  def width
+    object.width.to_f
+  end
+
+  def height
+    object.height.to_f
+  end
+
+  def total_circles
+    object.circles_count
   end
 end
