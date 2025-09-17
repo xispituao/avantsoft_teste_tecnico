@@ -8,7 +8,7 @@ class Api::V1::FramesController < ApplicationController
     if result[:success]
       render json: result[:data], serializer: FrameSerializer, status: :created
     else
-      render json: { errors: result[:errors] }, status: :unprocessable_entity
+      render json: { errors: result[:errors] }, status: :unprocessable_content
     end
   end
 
@@ -32,7 +32,7 @@ class Api::V1::FramesController < ApplicationController
     if result[:success]
       head :no_content
     else
-      render json: { errors: result[:errors] }, status: :unprocessable_entity
+      render json: { errors: result[:errors] }, status: :unprocessable_content
     end
   end
 
@@ -43,7 +43,7 @@ class Api::V1::FramesController < ApplicationController
     if result[:success]
       render json: result[:data], serializer: CircleSerializer, status: :created
     else
-      render json: { errors: result[:errors] }, status: :unprocessable_entity
+      render json: { errors: result[:errors] }, status: :unprocessable_content
     end
   end
 

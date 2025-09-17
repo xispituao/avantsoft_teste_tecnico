@@ -8,7 +8,7 @@ class Api::V1::CirclesController < ApplicationController
     if result[:success]
       render json: result[:data], each_serializer: CircleSerializer, status: :ok
     else
-      render json: { errors: result[:errors] }, status: :unprocessable_entity
+      render json: { errors: result[:errors] }, status: :unprocessable_content
     end
   end
 
@@ -19,7 +19,7 @@ class Api::V1::CirclesController < ApplicationController
     if result[:success]
       render json: result[:data], serializer: CircleSerializer, status: :ok
     else
-      render json: { errors: result[:errors] }, status: :unprocessable_entity
+      render json: { errors: result[:errors] }, status: :unprocessable_content
     end
   end
 

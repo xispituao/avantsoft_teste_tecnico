@@ -179,7 +179,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
         }
         
         # Verificar resposta
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         
         data = JSON.parse(response.body)
         expect(data['errors']).to include('Círculo deve caber completamente dentro do quadro')
@@ -259,7 +259,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
         it 'retorna erro 422' do
           get '/api/v1/circles'
           
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('center_x, center_y e radius são obrigatórios')
         end
@@ -311,7 +311,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
             }
           }
           
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('Círculo deve caber completamente dentro do quadro')
         end

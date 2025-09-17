@@ -276,7 +276,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
             }
           }
           
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('Width deve ser maior que 0')
         end
@@ -340,7 +340,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
           
           delete "/api/v1/frames/#{frame.id}"
           
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('Não é possível excluir quadro com círculos associados')
         end
@@ -392,7 +392,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
             }
           }
           
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('Círculo deve caber completamente dentro do quadro')
         end
