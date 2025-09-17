@@ -1,10 +1,5 @@
 class FrameService
   def self.create_frame(params)
-    # Converter circles para circles_attributes para nested_attributes
-    if params[:circles].present?
-      params[:circles_attributes] = params.delete(:circles)
-    end
-    
     frame = Frame.new(params)
     
     if frame.save

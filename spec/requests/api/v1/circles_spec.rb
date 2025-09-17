@@ -150,8 +150,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
     end
   end
 
-  # Testes simples e diretos (sem RSwag)
-  describe 'PUT /api/v1/circles/:id - Testes Simples' do
+  describe 'PUT /api/v1/circles/:id' do
     context 'quando tentamos atualizar um círculo para posição inválida' do
       it 'retorna erro 422' do
         # Criar frame e círculo
@@ -224,8 +223,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
     end
   end
 
-  # Mais testes simples para cobrir todas as funcionalidades
-  describe 'Circles API - Testes Adicionais Simples' do
+  describe 'Circles API' do
     describe 'GET /api/v1/circles' do
       context 'quando buscamos círculos com parâmetros válidos' do
         it 'retorna lista de círculos' do

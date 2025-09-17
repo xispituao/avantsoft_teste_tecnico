@@ -143,17 +143,6 @@ paths:
                     height:
                       type: number
                       example: 100
-                    circles:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          x_axis:
-                            type: number
-                          y_axis:
-                            type: number
-                          diameter:
-                            type: number
                     circles_attributes:
                       type: array
                       items:

@@ -25,7 +25,7 @@ RSpec.describe FrameService, type: :service do
 
       it 'cria um frame com círculos' do
         frame_params_with_circles = frame_params.merge(
-          circles: [
+          circles_attributes: [
             { x_axis: 1050, y_axis: 1050, diameter: 20 },
             { x_axis: 1070, y_axis: 1050, diameter: 15 }
           ]
@@ -67,7 +67,7 @@ RSpec.describe FrameService, type: :service do
           y_axis: 2000,
           width: 100,
           height: 100,
-          circles: [
+          circles_attributes: [
             { x_axis: 2050, y_axis: 2050, diameter: 200 } # Muito grande para o frame
           ]
         }

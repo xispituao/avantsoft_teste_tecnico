@@ -16,17 +16,6 @@ RSpec.describe 'Api::V1::Frames', type: :request do
               y_axis: { type: :number, example: 0 },
               width: { type: :number, example: 100 },
               height: { type: :number, example: 100 },
-              circles: {
-                type: :array,
-                items: {
-                  type: :object,
-                  properties: {
-                    x_axis: { type: :number },
-                    y_axis: { type: :number },
-                    diameter: { type: :number }
-                  }
-                }
-              },
               circles_attributes: {
                 type: :array,
                 items: {

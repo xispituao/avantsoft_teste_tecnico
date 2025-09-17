@@ -57,7 +57,6 @@ class Api::V1::FramesController < ApplicationController
 
   def frame_params
     params.require(:frame).permit(:x_axis, :y_axis, :width, :height, 
-                                  circles: [:x_axis, :y_axis, :diameter],
                                   circles_attributes: [:x_axis, :y_axis, :diameter, :_destroy, :id])
   end
 
