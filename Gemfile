@@ -48,6 +48,12 @@ group :development, :test do
   # RSpec testing framework [https://rspec.info/]
   gem "rspec-rails"
 
+  # Factory Bot for test data [https://github.com/thoughtbot/factory_bot_rails]
+  gem "factory_bot_rails"
+
+  # Shoulda Matchers for RSpec [https://github.com/thoughtbot/shoulda-matchers]
+  gem "shoulda-matchers"
+
   # Swagger/OpenAPI documentation [https://github.com/rswag/rswag]
   gem "rswag"
   gem "rswag-specs"
