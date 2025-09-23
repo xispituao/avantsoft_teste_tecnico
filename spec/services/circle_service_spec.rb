@@ -101,11 +101,11 @@ RSpec.describe CircleService, type: :service do
       # Limpar outros círculos dos frames para evitar conflitos
       frame1.circles.destroy_all
       frame2.circles.destroy_all
-      
+
       # Círculos no frame1
       create(:circle, frame: frame1, x_axis: 9050, y_axis: 9050, diameter: 20) # Dentro do raio
       create(:circle, frame: frame1, x_axis: 9090, y_axis: 9090, diameter: 20) # Fora do raio
-      
+
       # Círculos no frame2
       create(:circle, frame: frame2, x_axis: 10050, y_axis: 10050, diameter: 20) # Dentro do raio
     end

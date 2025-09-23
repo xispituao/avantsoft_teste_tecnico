@@ -30,7 +30,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
                 }
               }
             },
-            required: ['x_axis', 'y_axis', 'width', 'height']
+            required: [ 'x_axis', 'y_axis', 'width', 'height' ]
           }
         }
       }
@@ -169,7 +169,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
               y_axis: { type: :number, example: 50 },
               diameter: { type: :number, example: 20 }
             },
-            required: ['x_axis', 'y_axis', 'diameter']
+            required: [ 'x_axis', 'y_axis', 'diameter' ]
           }
         }
       }
@@ -254,7 +254,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
               total_circles: 0
             }
           }
-          
+
           expect(response).to have_http_status(:created)
           data = JSON.parse(response.body)
           expect(data['x_axis']).to eq(1000.0)
@@ -275,7 +275,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
               total_circles: 0
             }
           }
-          
+
           expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('Width deve ser maior que 0')
@@ -293,9 +293,9 @@ RSpec.describe 'Api::V1::Frames', type: :request do
             height: 100,
             total_circles: 0
           )
-          
+
           get "/api/v1/frames/#{frame.id}"
-          
+
           expect(response).to have_http_status(:ok)
           data = JSON.parse(response.body)
           expect(data['id']).to eq(frame.id)
@@ -314,9 +314,9 @@ RSpec.describe 'Api::V1::Frames', type: :request do
             height: 100,
             total_circles: 0
           )
-          
+
           delete "/api/v1/frames/#{frame.id}"
-          
+
           expect(response).to have_http_status(:no_content)
         end
       end
@@ -330,16 +330,16 @@ RSpec.describe 'Api::V1::Frames', type: :request do
             height: 100,
             total_circles: 0
           )
-          
+
           Circle.create!(
             frame: frame,
             x_axis: 4050,
             y_axis: 4050,
             diameter: 20
           )
-          
+
           delete "/api/v1/frames/#{frame.id}"
-          
+
           expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('Não é possível excluir quadro com círculos associados')
@@ -357,7 +357,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
             height: 100,
             total_circles: 0
           )
-          
+
           post "/api/v1/frames/#{frame.id}/circles", params: {
             circle: {
               x_axis: 5050,
@@ -365,7 +365,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
               diameter: 20
             }
           }
-          
+
           expect(response).to have_http_status(:created)
           data = JSON.parse(response.body)
           expect(data['x_axis']).to eq(5050.0)
@@ -383,7 +383,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
             height: 100,
             total_circles: 0
           )
-          
+
           post "/api/v1/frames/#{frame.id}/circles", params: {
             circle: {
               x_axis: 6200,
@@ -391,7 +391,7 @@ RSpec.describe 'Api::V1::Frames', type: :request do
               diameter: 20
             }
           }
-          
+
           expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('Círculo deve caber completamente dentro do quadro')

@@ -155,20 +155,20 @@ RSpec.describe 'Api::V1::Circles', type: :request do
       it 'retorna erro 422' do
         # Criar frame e círculo
         frame = Frame.create!(
-          x_axis: 9000, 
-          y_axis: 9000, 
-          width: 100, 
-          height: 100, 
+          x_axis: 9000,
+          y_axis: 9000,
+          width: 100,
+          height: 100,
           total_circles: 0
         )
-        
+
         circle = Circle.create!(
-          frame: frame, 
-          x_axis: 9050, 
-          y_axis: 9050, 
+          frame: frame,
+          x_axis: 9050,
+          y_axis: 9050,
           diameter: 20
         )
-        
+
         # Tentar atualizar para posição que não cabe no frame
         put "/api/v1/circles/#{circle.id}", params: {
           circle: {
@@ -177,33 +177,33 @@ RSpec.describe 'Api::V1::Circles', type: :request do
             diameter: 20
           }
         }
-        
+
         # Verificar resposta
         expect(response).to have_http_status(:unprocessable_content)
-        
+
         data = JSON.parse(response.body)
         expect(data['errors']).to include('Círculo deve caber completamente dentro do quadro')
       end
     end
-    
+
     context 'quando tentamos atualizar um círculo para posição válida' do
       it 'retorna sucesso 200' do
         # Criar frame e círculo
         frame = Frame.create!(
-          x_axis: 9000, 
-          y_axis: 9000, 
-          width: 100, 
-          height: 100, 
+          x_axis: 9000,
+          y_axis: 9000,
+          width: 100,
+          height: 100,
           total_circles: 0
         )
-        
+
         circle = Circle.create!(
-          frame: frame, 
-          x_axis: 9050, 
-          y_axis: 9050, 
+          frame: frame,
+          x_axis: 9050,
+          y_axis: 9050,
           diameter: 20
         )
-        
+
         # Atualizar para posição válida
         put "/api/v1/circles/#{circle.id}", params: {
           circle: {
@@ -212,10 +212,10 @@ RSpec.describe 'Api::V1::Circles', type: :request do
             diameter: 20
           }
         }
-        
+
         # Verificar resposta
         expect(response).to have_http_status(:ok)
-        
+
         data = JSON.parse(response.body)
         expect(data['x_axis']).to eq(9060.0)
         expect(data['y_axis']).to eq(9050.0)
@@ -234,20 +234,20 @@ RSpec.describe 'Api::V1::Circles', type: :request do
             height: 100,
             total_circles: 0
           )
-          
+
           Circle.create!(
             frame: frame,
             x_axis: 7050,
             y_axis: 7050,
             diameter: 20
           )
-          
+
           get '/api/v1/circles', params: {
             center_x: 7050,
             center_y: 7050,
             radius: 50
           }
-          
+
           expect(response).to have_http_status(:ok)
           data = JSON.parse(response.body)
           expect(data).to be_an(Array)
@@ -258,7 +258,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
       context 'quando buscamos círculos sem parâmetros obrigatórios' do
         it 'retorna erro 422' do
           get '/api/v1/circles'
-          
+
           expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('center_x, center_y e radius são obrigatórios')
@@ -276,7 +276,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
             height: 100,
             total_circles: 0
           )
-          
+
           post "/api/v1/frames/#{frame.id}/circles", params: {
             circle: {
               x_axis: 8050,
@@ -284,7 +284,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
               diameter: 20
             }
           }
-          
+
           expect(response).to have_http_status(:created)
           data = JSON.parse(response.body)
           expect(data['x_axis']).to eq(8050.0)
@@ -302,7 +302,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
             height: 100,
             total_circles: 0
           )
-          
+
           post "/api/v1/frames/#{frame.id}/circles", params: {
             circle: {
               x_axis: 9200,
@@ -310,7 +310,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
               diameter: 20
             }
           }
-          
+
           expect(response).to have_http_status(:unprocessable_content)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('Círculo deve caber completamente dentro do quadro')
@@ -328,16 +328,16 @@ RSpec.describe 'Api::V1::Circles', type: :request do
             height: 100,
             total_circles: 0
           )
-          
+
           circle = Circle.create!(
             frame: frame,
             x_axis: 10050,
             y_axis: 10050,
             diameter: 20
           )
-          
+
           delete "/api/v1/circles/#{circle.id}"
-          
+
           expect(response).to have_http_status(:no_content)
         end
       end
@@ -345,7 +345,7 @@ RSpec.describe 'Api::V1::Circles', type: :request do
       context 'quando tentamos deletar um círculo inexistente' do
         it 'retorna erro 404' do
           delete '/api/v1/circles/999'
-          
+
           expect(response).to have_http_status(:not_found)
           data = JSON.parse(response.body)
           expect(data['errors']).to include('Círculo não encontrado')

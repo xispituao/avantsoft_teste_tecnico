@@ -64,5 +64,3 @@ group :development, :test do
   gem "rswag"
   gem "rswag-specs"
 end
-
-

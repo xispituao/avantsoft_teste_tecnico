@@ -23,7 +23,7 @@ class Frame < ApplicationRecord
       .first
 
     if overlapping_frame
-      errors.add(:base, I18n.t('models.frame.errors.no_frame_overlap'))
+      errors.add(:base, I18n.t("models.frame.errors.no_frame_overlap"))
     end
   end
 
@@ -32,7 +32,7 @@ class Frame < ApplicationRecord
     frame1_right = frame1.x_axis + frame1.width
     frame1_top = frame1.y_axis
     frame1_bottom = frame1.y_axis + frame1.height
-    
+
     frame2_left = frame2.x_axis
     frame2_right = frame2.x_axis + frame2.width
     frame2_top = frame2.y_axis

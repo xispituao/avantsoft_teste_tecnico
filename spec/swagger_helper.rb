@@ -33,58 +33,58 @@ RSpec.configure do |config|
           Frame: {
             type: :object,
             description: I18n.t('swagger.schemas.frame_description'),
-            required: ['x_axis', 'y_axis', 'width', 'height'],
+            required: [ 'x_axis', 'y_axis', 'width', 'height' ],
             properties: {
-              id: { 
-                type: :integer, 
+              id: {
+                type: :integer,
                 description: I18n.t('swagger.schemas.field_descriptions.id'),
                 example: 1,
                 readOnly: true
               },
-              x_axis: { 
-                type: :number, 
+              x_axis: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.x_axis'),
                 example: 100.50,
                 minimum: 0
               },
-              y_axis: { 
-                type: :number, 
+              y_axis: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.y_axis'),
                 example: 200.75,
                 minimum: 0
               },
-              width: { 
-                type: :number, 
+              width: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.width'),
                 example: 150.00,
                 minimum: 0.01
               },
-              height: { 
-                type: :number, 
+              height: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.height'),
                 example: 100.00,
                 minimum: 0.01
               },
-              total_circles: { 
-                type: :integer, 
+              total_circles: {
+                type: :integer,
                 description: I18n.t('swagger.schemas.field_descriptions.total_circles'),
                 example: 3,
                 minimum: 0,
                 readOnly: true
               },
-              created_at: { 
-                type: :string, 
+              created_at: {
+                type: :string,
                 format: :datetime,
                 description: I18n.t('swagger.schemas.field_descriptions.created_at'),
                 example: '2025-09-17T02:42:13.630Z',
                 readOnly: true
               },
-              updated_at: { 
-                type: :string, 
+              updated_at: {
+                type: :string,
                 format: :datetime,
                 description: I18n.t('swagger.schemas.field_descriptions.updated_at'),
                 example: '2025-09-17T02:42:13.630Z',
@@ -95,49 +95,49 @@ RSpec.configure do |config|
           Circle: {
             type: :object,
             description: I18n.t('swagger.schemas.circle_description'),
-            required: ['x_axis', 'y_axis', 'diameter', 'frame_id'],
+            required: [ 'x_axis', 'y_axis', 'diameter', 'frame_id' ],
             properties: {
-              id: { 
-                type: :integer, 
+              id: {
+                type: :integer,
                 description: I18n.t('swagger.schemas.field_descriptions.id'),
                 example: 1,
                 readOnly: true
               },
-              x_axis: { 
-                type: :number, 
+              x_axis: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.circle_center_x'),
                 example: 125.25,
                 minimum: 0
               },
-              y_axis: { 
-                type: :number, 
+              y_axis: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.circle_center_y'),
                 example: 175.50,
                 minimum: 0
               },
-              diameter: { 
-                type: :number, 
+              diameter: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.diameter'),
                 example: 20.00,
                 minimum: 0.01
               },
-              frame_id: { 
-                type: :integer, 
+              frame_id: {
+                type: :integer,
                 description: I18n.t('swagger.schemas.field_descriptions.frame_id'),
                 example: 1
               },
-              created_at: { 
-                type: :string, 
+              created_at: {
+                type: :string,
                 format: :datetime,
                 description: I18n.t('swagger.schemas.field_descriptions.created_at'),
                 example: '2025-09-17T02:42:13.630Z',
                 readOnly: true
               },
-              updated_at: { 
-                type: :string, 
+              updated_at: {
+                type: :string,
                 format: :datetime,
                 description: I18n.t('swagger.schemas.field_descriptions.updated_at'),
                 example: '2025-09-17T02:42:13.630Z',
@@ -149,35 +149,35 @@ RSpec.configure do |config|
             type: :object,
             description: I18n.t('swagger.schemas.frame_metrics_description'),
             properties: {
-              total_circles: { 
-                type: :integer, 
+              total_circles: {
+                type: :integer,
                 description: I18n.t('swagger.schemas.field_descriptions.total_circles_count'),
                 example: 3,
                 minimum: 0
               },
-              highest_circle_position: { 
-                type: :number, 
+              highest_circle_position: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.highest_position'),
                 example: 150.00,
                 nullable: true
               },
-              lowest_circle_position: { 
-                type: :number, 
+              lowest_circle_position: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.lowest_position'),
                 example: 200.00,
                 nullable: true
               },
-              leftmost_circle_position: { 
-                type: :number, 
+              leftmost_circle_position: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.leftmost_position'),
                 example: 120.00,
                 nullable: true
               },
-              rightmost_circle_position: { 
-                type: :number, 
+              rightmost_circle_position: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.rightmost_position'),
                 example: 180.00,
@@ -201,31 +201,31 @@ RSpec.configure do |config|
           CircleSearchParams: {
             type: :object,
             description: I18n.t('swagger.schemas.circle_search_params_description'),
-            required: ['center_x', 'center_y', 'radius'],
+            required: [ 'center_x', 'center_y', 'radius' ],
             properties: {
-              center_x: { 
-                type: :number, 
+              center_x: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.center_x'),
                 example: 150.00,
                 minimum: 0
               },
-              center_y: { 
-                type: :number, 
+              center_y: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.center_y'),
                 example: 175.00,
                 minimum: 0
               },
-              radius: { 
-                type: :number, 
+              radius: {
+                type: :number,
                 format: :decimal,
                 description: I18n.t('swagger.schemas.field_descriptions.radius'),
                 example: 50.00,
                 minimum: 0.01
               },
-              frame_id: { 
-                type: :integer, 
+              frame_id: {
+                type: :integer,
                 description: I18n.t('swagger.schemas.field_descriptions.frame_id_optional'),
                 example: 1
               }
@@ -234,16 +234,16 @@ RSpec.configure do |config|
           Error: {
             type: :object,
             description: I18n.t('swagger.schemas.error_description'),
-            required: ['errors'],
+            required: [ 'errors' ],
             properties: {
               errors: {
                 type: :array,
                 description: I18n.t('swagger.schemas.field_descriptions.errors_list'),
-                items: { 
+                items: {
                   type: :string,
                   example: I18n.t('models.circle.errors.circle_fits_in_frame')
                 },
-                example: [I18n.t('models.circle.errors.circle_fits_in_frame'), I18n.t('models.circle.errors.no_circle_overlap')]
+                example: [ I18n.t('models.circle.errors.circle_fits_in_frame'), I18n.t('models.circle.errors.no_circle_overlap') ]
               }
             }
           },
@@ -259,8 +259,8 @@ RSpec.configure do |config|
                   items: { type: :string }
                 },
                 example: {
-                  'x_axis' => [I18n.t('activerecord.errors.models.circle.attributes.x_axis.blank')],
-                  'diameter' => [I18n.t('activerecord.errors.models.circle.attributes.diameter.greater_than', count: 0)]
+                  'x_axis' => [ I18n.t('activerecord.errors.models.circle.attributes.x_axis.blank') ],
+                  'diameter' => [ I18n.t('activerecord.errors.models.circle.attributes.diameter.greater_than', count: 0) ]
                 }
               }
             }

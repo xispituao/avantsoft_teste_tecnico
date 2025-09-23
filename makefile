@@ -117,3 +117,16 @@ docs:
 	docker compose -f docker-compose.development.yml --env-file .env.development exec app bundle exec rake rswag:specs:swaggerize
 	@echo "Documentação gerada com sucesso!"
 	@echo "Acesse: http://localhost:3000/api-docs"
+
+# RuboCop - Análise de código
+rubocop:
+	@echo "Executando RuboCop..."
+	docker compose -f docker-compose.development.yml --env-file .env.development exec app bundle exec rubocop
+
+rubocop-fix:
+	@echo "Corrigindo problemas do RuboCop automaticamente..."
+	docker compose -f docker-compose.development.yml --env-file .env.development exec app bundle exec rubocop -A
+
+rubocop-fix-unsafe:
+	@echo "Corrigindo problemas do RuboCop (incluindo correções não seguras)..."
+	docker compose -f docker-compose.development.yml --env-file .env.development exec app bundle exec rubocop -A --only Layout,Style

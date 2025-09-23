@@ -4,14 +4,14 @@ class ApplicationController < ActionController::API
   private
 
   def set_locale
-    if request.headers['Accept-Language'].present?
-      locale = request.headers['Accept-Language'].split(',').first&.strip&.split('-')&.first&.downcase
-      
+    if request.headers["Accept-Language"].present?
+      locale = request.headers["Accept-Language"].split(",").first&.strip&.split("-")&.first&.downcase
+
       # Mapear 'en' para :en e 'pt' para :'pt-BR'
       case locale
-      when 'en'
+      when "en"
         I18n.locale = :en
-      when 'pt'
+      when "pt"
         I18n.locale = :'pt-BR'
       else
         I18n.locale = I18n.default_locale

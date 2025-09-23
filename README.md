@@ -82,6 +82,11 @@ make test             # Executa todos os testes
 make swagger          # Gera documentação Swagger
 make docs             # Alias para o make swagger
 
+# 🔍 Análise de Código
+make rubocop          # Executa análise do RuboCop
+make rubocop-fix      # Corrige problemas automaticamente
+make rubocop-fix-unsafe # Corrige problemas (incluindo não seguros)
+
 # 🗄️ Banco de Dados
 make migrate          # Executa migrações
 
@@ -136,6 +141,28 @@ DELETE /api/v1/circles/:id      # Remove círculo
 A documentação Swagger está disponível em:
 - **URL**: `http://localhost:3000/api-docs/index.html`
 - **Geração**: `make docs`
+
+## 🔍 Análise de Código com RuboCop
+
+O projeto utiliza o **RuboCop** para análise estática de código Ruby, garantindo qualidade e consistência no código.
+
+### **Configuração**
+- **Gem**: `rubocop-rails-omakase` - Configuração padrão do Rails
+- **Arquivo**: `.rubocop.yml` - Configuração personalizada
+- **Versão**: 1.80.2
+
+### **Comandos Disponíveis**
+```bash
+# Análise de código
+make rubocop              # Executa análise completa
+make rubocop-fix          # Corrige problemas automaticamente (seguro)
+make rubocop-fix-unsafe   # Corrige problemas (incluindo não seguros)
+```
+
+### **Uso Recomendado**
+1. **Desenvolvimento**: Execute `make rubocop` antes de commits
+2. **Correção Automática**: Use `make rubocop-fix` para corrigir problemas simples
+3. **Integração**: Configure no CI/CD para garantir qualidade
 
 ## 🌍 Internacionalização
 

@@ -1,7 +1,7 @@
 class CircleService
   def self.create_circle(frame, params)
     circle = frame.circles.build(params)
-    
+
     if circle.save
       { success: true, data: circle }
     else
@@ -21,7 +21,7 @@ class CircleService
     if circle.destroy
       { success: true }
     else
-      { success: false, errors: [I18n.t('services.circle_service.errors.circle_not_found')] }
+      { success: false, errors: [ I18n.t("services.circle_service.errors.circle_not_found") ] }
     end
   end
 
@@ -34,7 +34,7 @@ class CircleService
 
     # Verificar se os parâmetros estão presentes e não são vazios
     if center_x.blank? || center_y.blank? || radius.blank?
-      return { success: false, errors: [I18n.t('services.circle_service.errors.search_params_required')] }
+      return { success: false, errors: [ I18n.t("services.circle_service.errors.search_params_required") ] }
     end
 
     center_x = center_x.to_f
@@ -42,12 +42,12 @@ class CircleService
     radius = radius.to_f
 
     if radius <= 0
-      return { success: false, errors: [I18n.t('services.circle_service.errors.radius_must_be_positive')] }
+      return { success: false, errors: [ I18n.t("services.circle_service.errors.radius_must_be_positive") ] }
     end
 
     # Construir query base
     query = Circle.joins(:frame)
-    
+
     # Filtrar por frame se especificado
     if frame_id.present?
       query = query.where(frame_id: frame_id)

@@ -1,7 +1,7 @@
 class FrameService
   def self.create_frame(params)
     frame = Frame.new(params)
-    
+
     if frame.save
       { success: true, data: frame }
     else
@@ -12,11 +12,11 @@ class FrameService
   end
 
   def self.get_frame_details(frame)
-    return { success: false, errors: [I18n.t('services.frame_service.errors.frame_not_found')] } unless frame
-    
+    return { success: false, errors: [ I18n.t("services.frame_service.errors.frame_not_found") ] } unless frame
+
     # Calcular métricas dos círculos
     circles = frame.circles
-    
+
     metrics = {
       total_circles: circles.count,
       highest_circle_position: circles.maximum(:y_axis),
@@ -24,15 +24,15 @@ class FrameService
       leftmost_circle_position: circles.minimum(:x_axis),
       rightmost_circle_position: circles.maximum(:x_axis)
     }
-    
+
     { success: true, data: { frame: frame, metrics: metrics } }
   end
 
   def self.destroy_frame(frame)
-    return { success: false, errors: [I18n.t('services.frame_service.errors.frame_not_found')] } unless frame
-    
+    return { success: false, errors: [ I18n.t("services.frame_service.errors.frame_not_found") ] } unless frame
+
     if frame.circles.any?
-      { success: false, errors: [I18n.t('services.frame_service.errors.cannot_delete_with_circles')] }
+      { success: false, errors: [ I18n.t("services.frame_service.errors.cannot_delete_with_circles") ] }
     else
       frame.destroy
       { success: true }
