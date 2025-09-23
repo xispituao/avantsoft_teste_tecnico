@@ -6,7 +6,9 @@ class Api::V1::CirclesController < ApplicationController
     result = CircleService.search_circles(search_params)
 
     if result[:success]
-      render json: result[:data], each_serializer: CircleSerializer, status: :ok
+      circles = result[:data]
+      paginated_circles = paginate_query(circles)
+      render_paginated_response(paginated_circles, CircleSerializer)
     else
       render json: { errors: result[:errors] }, status: :unprocessable_content
     end

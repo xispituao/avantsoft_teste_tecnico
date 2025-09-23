@@ -120,20 +120,45 @@ frame_id: integer    # Referência ao quadro pai
 
 ### **Frames**
 ```
-GET    /api/v1/frames           # Lista todos os quadros
 POST   /api/v1/frames           # Cria novo quadro
 GET    /api/v1/frames/:id       # Mostra quadro específico
-PUT    /api/v1/frames/:id       # Atualiza quadro
 DELETE /api/v1/frames/:id       # Remove quadro
 ```
 
 ### **Circles**
 ```
-GET    /api/v1/circles          # Lista todos os círculos
-POST   /api/v1/circles          # Cria novo círculo
-GET    /api/v1/circles/:id      # Mostra círculo específico
+GET    /api/v1/circles          # Lista círculos com filtros (paginado)
 PUT    /api/v1/circles/:id      # Atualiza círculo
 DELETE /api/v1/circles/:id      # Remove círculo
+```
+
+## 📄 Paginação Centralizada
+
+O projeto utiliza **Kaminari** com um sistema centralizado de paginação através do `PaginationHelper`.
+
+### **Parâmetros de Paginação**
+- `page`: Número da página (padrão: 1)
+- `per_page`: Itens por página (padrão: 10, máximo: 100)
+
+### **Resposta Padronizada**
+```json
+{
+  "data": [...],
+  "pagination": {
+    "current_page": 1,
+    "per_page": 10,
+    "total_pages": 5,
+    "total_count": 50,
+    "has_next_page": true,
+    "has_prev_page": false
+  }
+}
+```
+
+### **Exemplos de Uso**
+```bash
+# Buscar circles com filtros e paginação
+GET /api/v1/circles?center_x=0&center_y=0&radius=100&page=2&per_page=20
 ```
 
 ## 📚 Documentação da API

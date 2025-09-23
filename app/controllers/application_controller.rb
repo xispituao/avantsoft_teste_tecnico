@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+  include PaginationHelper
+  
   before_action :set_locale
 
   private
