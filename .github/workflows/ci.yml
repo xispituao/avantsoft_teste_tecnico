@@ -2,76 +2,40 @@ name: CI
 
 on:
   pull_request:
+    branches: [ main, development ]
   push:
-    branches: [ main ]
+    branches: [ main, development ]
 
 jobs:
-  scan_ruby:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
-
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
-
-      # redis:
-      #   image: redis
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev pkg-config
-
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
+      - name: Copy environment file
+        run: cp base_files/development/.env .env
 
-      - name: Run tests
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test
+      - name: Build and start services
+        run: docker compose -f docker-compose.yml --env-file .env up -d --build --wait --wait-timeout 120
+
+      - name: Setup database
+        run: docker compose -f docker-compose.yml --env-file .env exec -T app rails db:prepare
+
+      - name: Run Brakeman security scan
+        run: docker compose -f docker-compose.yml --env-file .env exec -T app bin/brakeman --no-pager
+
+      - name: Run RuboCop linter
+        run: docker compose -f docker-compose.yml --env-file .env exec -T app bin/rubocop
+
+      - name: Run RSpec tests
+        run: docker compose -f docker-compose.yml --env-file .env exec -T app bundle exec rspec
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose -f docker-compose.yml --env-file .env logs
+
+      - name: Stop services
+        if: always()
+        run: docker compose -f docker-compose.yml --env-file .env down -v

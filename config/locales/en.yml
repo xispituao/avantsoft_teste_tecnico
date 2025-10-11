@@ -29,3 +29,12 @@
 
 en:
   hello: "Hello world"
+  
+  models:
+    frame:
+      errors:
+        no_frame_overlap: "Frame cannot overlap or touch another frame"
+    circle:
+      errors:
+        circle_fits_in_frame: "Circle must fit completely inside the frame"
+        no_circle_overlap: "Circle cannot overlap or touch another circle"

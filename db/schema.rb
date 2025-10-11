@@ -10,8 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 0) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_11_002958) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "circles", force: :cascade do |t|
+    t.decimal "x_axis", precision: 10, scale: 2
+    t.decimal "y_axis", precision: 10, scale: 2
+    t.decimal "diameter", precision: 10, scale: 2
+    t.bigint "frame_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["frame_id", "x_axis", "y_axis"], name: "index_circles_on_frame_and_position"
+    t.index ["frame_id"], name: "index_circles_on_frame_id"
+    t.index ["x_axis", "y_axis"], name: "index_circles_on_position"
+  end
+
+  create_table "frames", force: :cascade do |t|
+    t.decimal "x_axis", precision: 10, scale: 2
+    t.decimal "y_axis", precision: 10, scale: 2
+    t.decimal "width", precision: 10, scale: 2
+    t.decimal "height", precision: 10, scale: 2
+    t.decimal "highest_circle_position", precision: 10, scale: 2
+    t.decimal "rightmost_circle_position", precision: 10, scale: 2
+    t.decimal "leftmost_circle_position", precision: 10, scale: 2
+    t.decimal "lowest_circle_position", precision: 10, scale: 2
+    t.integer "circle_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["x_axis", "width"], name: "index_frames_on_x_axis_width"
+    t.index ["x_axis", "y_axis", "width", "height"], name: "index_frames_on_geometry"
+    t.index ["y_axis", "height"], name: "index_frames_on_y_axis_height"
+  end
+
+  add_foreign_key "circles", "frames"
 end
