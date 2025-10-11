@@ -12,7 +12,6 @@ class Circle < ApplicationRecord
   after_save :update_frame_circle_positions
   after_destroy :update_frame_circle_positions
 
-  # Retorna o raio do círculo
   def radius
     @radius ||= diameter / 2.0
   end
@@ -22,7 +21,6 @@ class Circle < ApplicationRecord
   def circle_fits_in_frame
     return unless frame && x_axis && y_axis && diameter
 
-    # Verificar se o círculo cabe dentro do quadro
     if x_axis - radius < frame.x_axis ||
        x_axis + radius > frame.x_axis + frame.width ||
        y_axis - radius < frame.y_axis ||
@@ -34,10 +32,6 @@ class Circle < ApplicationRecord
   def no_circle_overlap
     return unless frame && x_axis && y_axis && diameter
 
-    # Verificar sobreposição usando distância euclidiana
-    # Dois círculos se tocam quando: distância_entre_centros = soma_dos_raios
-    # Dois círculos se sobrepõem quando: distância_entre_centros < soma_dos_raios
-    # Para NÃO permitir tocar nem sobrepor, usamos <=
     overlapping_circle = frame.circles
       .where.not(id: id)
       .where(

@@ -1,16 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Circle, type: :model do
-  # ====================
-  # Associations
-  # ====================
   describe 'associations' do
     it { is_expected.to belong_to(:frame).counter_cache(:circle_count) }
   end
 
-  # ====================
-  # Validations
-  # ====================
   describe 'validations' do
     describe 'presence validations' do
       it { is_expected.to validate_presence_of(:x_axis) }
@@ -61,7 +55,7 @@ RSpec.describe Circle, type: :model do
         context 'when circle extends beyond frame' do
           it 'is invalid when extending beyond left edge' do
             circle = build(:circle, frame: frame, x_axis: 4, y_axis: 50, diameter: 10)
-            
+
             aggregate_failures do
               expect(circle).not_to be_valid
               expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
@@ -70,7 +64,7 @@ RSpec.describe Circle, type: :model do
 
           it 'is invalid when extending beyond right edge' do
             circle = build(:circle, frame: frame, x_axis: 96, y_axis: 50, diameter: 10)
-            
+
             aggregate_failures do
               expect(circle).not_to be_valid
               expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
@@ -79,7 +73,7 @@ RSpec.describe Circle, type: :model do
 
           it 'is invalid when extending beyond top edge' do
             circle = build(:circle, frame: frame, x_axis: 50, y_axis: 4, diameter: 10)
-            
+
             aggregate_failures do
               expect(circle).not_to be_valid
               expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
@@ -88,7 +82,7 @@ RSpec.describe Circle, type: :model do
 
           it 'is invalid when extending beyond bottom edge' do
             circle = build(:circle, frame: frame, x_axis: 50, y_axis: 96, diameter: 10)
-            
+
             aggregate_failures do
               expect(circle).not_to be_valid
               expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
@@ -97,7 +91,7 @@ RSpec.describe Circle, type: :model do
 
           it 'is invalid when completely outside frame' do
             circle = build(:circle, frame: frame, x_axis: -50, y_axis: -50, diameter: 10)
-            
+
             expect(circle).not_to be_valid
           end
         end
@@ -114,7 +108,6 @@ RSpec.describe Circle, type: :model do
           end
 
           it 'is valid with minimum safe distance' do
-            # Distance = 15, sum of radii = 10, so gap of 5
             circle = build(:circle, frame: frame, x_axis: 40, y_axis: 25, diameter: 10)
             expect(circle).to be_valid
           end
@@ -122,9 +115,8 @@ RSpec.describe Circle, type: :model do
 
         context 'when circles touch' do
           it 'is invalid' do
-            # Distance = 10, sum of radii = 10, so they touch exactly
             circle = build(:circle, frame: frame, x_axis: 35, y_axis: 25, diameter: 10)
-            
+
             aggregate_failures do
               expect(circle).not_to be_valid
               expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.no_circle_overlap'))
@@ -135,7 +127,7 @@ RSpec.describe Circle, type: :model do
         context 'when circles overlap' do
           it 'is invalid' do
             circle = build(:circle, frame: frame, x_axis: 30, y_axis: 25, diameter: 10)
-            
+
             aggregate_failures do
               expect(circle).not_to be_valid
               expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.no_circle_overlap'))
@@ -144,7 +136,7 @@ RSpec.describe Circle, type: :model do
 
           it 'is invalid when one circle is inside another' do
             circle = build(:circle, frame: frame, x_axis: 25, y_axis: 25, diameter: 2)
-            
+
             expect(circle).not_to be_valid
           end
         end
@@ -158,16 +150,13 @@ RSpec.describe Circle, type: :model do
           it 'validates against other circles' do
             other_circle = create(:circle, frame: frame, x_axis: 75, y_axis: 75, diameter: 10)
             existing_circle.assign_attributes(x_axis: 75, y_axis: 75)
-            
+
             expect(existing_circle).not_to be_valid
           end
         end
 
         context 'with different sized circles' do
           it 'considers the sum of radii correctly' do
-            # Existing circle: center at 25, radius 5
-            # New circle: center at 45, radius 10
-            # Distance = 20, sum of radii = 15, so they don't touch
             circle = build(:circle, frame: frame, x_axis: 45, y_axis: 25, diameter: 20)
             expect(circle).to be_valid
           end
@@ -176,9 +165,6 @@ RSpec.describe Circle, type: :model do
     end
   end
 
-  # ====================
-  # Instance Methods
-  # ====================
   describe '#radius' do
     let(:circle) { build(:circle, diameter: 20) }
 
@@ -189,7 +175,7 @@ RSpec.describe Circle, type: :model do
     it 'memoizes the result' do
       first_call = circle.radius
       second_call = circle.radius
-      
+
       expect(first_call.object_id).to eq(second_call.object_id)
     end
 
@@ -199,9 +185,6 @@ RSpec.describe Circle, type: :model do
     end
   end
 
-  # ====================
-  # Callbacks
-  # ====================
   describe 'callbacks' do
     let(:frame) { create(:frame, :large) }
 
@@ -221,9 +204,6 @@ RSpec.describe Circle, type: :model do
     end
   end
 
-  # ====================
-  # Edge Cases
-  # ====================
   describe 'edge cases' do
     let(:frame) { create(:frame, x_axis: 0, y_axis: 0, width: 100, height: 100) }
 
@@ -254,7 +234,7 @@ RSpec.describe Circle, type: :model do
 
       it 'stores decimal values correctly' do
         circle = create(:circle, frame: frame, x_axis: 25.75, y_axis: 30.33, diameter: 5.5)
-        
+
         aggregate_failures do
           expect(circle.reload.x_axis).to eq(25.75)
           expect(circle.reload.y_axis).to eq(30.33)
@@ -266,7 +246,7 @@ RSpec.describe Circle, type: :model do
     context 'with zero diameter' do
       it 'is invalid' do
         circle = build(:circle, frame: frame, diameter: 0)
-        
+
         aggregate_failures do
           expect(circle).not_to be_valid
           expect(circle.errors[:diameter]).to be_present
@@ -277,7 +257,7 @@ RSpec.describe Circle, type: :model do
     context 'with negative diameter' do
       it 'is invalid' do
         circle = build(:circle, frame: frame, diameter: -5)
-        
+
         aggregate_failures do
           expect(circle).not_to be_valid
           expect(circle.errors[:diameter]).to be_present
@@ -289,8 +269,7 @@ RSpec.describe Circle, type: :model do
       it 'handles circles at exact corners' do
         diameter = 10
         radius = 5
-        
-        # Top-left corner
+
         circle = build(:circle, frame: frame, x_axis: radius, y_axis: radius, diameter: diameter)
         expect(circle).to be_valid
       end

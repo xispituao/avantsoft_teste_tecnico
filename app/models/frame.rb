@@ -9,7 +9,6 @@ class Frame < ApplicationRecord
 
   validate :no_frame_overlap
 
-  # Update circle positions after any circle changes
   def update_circle_positions!
     return reset_circle_positions! if circles.empty?
 
@@ -26,12 +25,6 @@ class Frame < ApplicationRecord
   def no_frame_overlap
     return unless x_axis && y_axis && width && height
 
-    # Verificar sobreposição usando lógica correta de retângulos
-    # Dois retângulos se sobrepõem ou tocam quando:
-    # - frame1.right >= frame2.left AND frame1.left <= frame2.right (eixo X)
-    # - frame1.bottom >= frame2.top AND frame1.top <= frame2.bottom (eixo Y)
-    #
-    # Para NÃO permitir tocar nem sobrepor, usamos >= e <=
     overlapping_frame = Frame
       .where.not(id: id)
       .where(

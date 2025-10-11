@@ -1,5 +1,3 @@
-# Shared examples for common validation scenarios
-
 RSpec.shared_examples 'invalid with overlap error' do
   it 'is invalid and has overlap error' do
     expect(subject).not_to be_valid
@@ -12,4 +10,3 @@ RSpec.shared_examples 'valid frame' do
     expect(subject).to be_valid
   end
 end
-

@@ -20,7 +20,7 @@ class CreateFrames < ActiveRecord::Migration[8.0]
     # Índices compostos para consultas de sobreposição
     add_index :frames, [ :x_axis, :width ], name: 'index_frames_on_x_axis_width'
     add_index :frames, [ :y_axis, :height ], name: 'index_frames_on_y_axis_height'
-    
+
     # Índice para counter_cache e ordenação
     add_index :frames, :circle_count
   end

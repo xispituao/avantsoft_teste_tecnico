@@ -1,17 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Frame, type: :model do
-  # ====================
-  # Associations
-  # ====================
   describe 'associations' do
     it { is_expected.to have_many(:circles).dependent(:restrict_with_error) }
     it { is_expected.to accept_nested_attributes_for(:circles).allow_destroy(true) }
   end
 
-  # ====================
-  # Validations
-  # ====================
   describe 'validations' do
     describe 'presence validations' do
       it { is_expected.to validate_presence_of(:x_axis) }
@@ -29,7 +23,6 @@ RSpec.describe Frame, type: :model do
 
     describe 'custom validations' do
       describe '#no_frame_overlap' do
-        # Use let! to persist the reference frame in database
         let!(:reference_frame) { create(:frame, :medium, x_axis: 0, y_axis: 0) }
 
         context 'with frames that do not overlap or touch' do
@@ -50,14 +43,14 @@ RSpec.describe Frame, type: :model do
         context 'with frames that overlap' do
           context 'when frames overlap completely' do
             subject do
-              build(:frame, 
-                x_axis: reference_frame.x_axis, 
+              build(:frame,
+                x_axis: reference_frame.x_axis,
                 y_axis: reference_frame.y_axis,
-                width: reference_frame.width, 
+                width: reference_frame.width,
                 height: reference_frame.height
               )
             end
-            
+
             it_behaves_like 'invalid with overlap error'
           end
 
@@ -85,14 +78,14 @@ RSpec.describe Frame, type: :model do
 
           context 'when touching on left edge' do
             subject do
-              build(:frame, 
+              build(:frame,
                 x_axis: reference_frame.x_axis - 50,
                 y_axis: reference_frame.y_axis,
                 width: 50,
                 height: 50
               )
             end
-            
+
             it_behaves_like 'invalid with overlap error'
           end
 
@@ -105,7 +98,7 @@ RSpec.describe Frame, type: :model do
                 height: 50
               )
             end
-            
+
             it_behaves_like 'invalid with overlap error'
           end
         end
@@ -113,13 +106,13 @@ RSpec.describe Frame, type: :model do
         context 'when updating an existing frame' do
           it 'does not validate against itself' do
             reference_frame.x_axis = 5
-            
+
             expect(reference_frame).to be_valid
           end
 
           it 'validates against other frames' do
             other_frame = create(:frame, x_axis: 100, y_axis: 100, width: 50, height: 50)
-            
+
             aggregate_failures do
               reference_frame.assign_attributes(x_axis: 100, y_axis: 100)
               expect(reference_frame).not_to be_valid
@@ -132,16 +125,13 @@ RSpec.describe Frame, type: :model do
     end
   end
 
-  # ====================
-  # Instance Methods
-  # ====================
   describe '#update_circle_positions!' do
     let(:frame) { create(:frame, :large) }
 
     context 'when frame has no circles' do
       it 'resets all position fields to nil' do
         frame.update_circle_positions!
-        
+
         aggregate_failures do
           expect(frame.highest_circle_position).to be_nil
           expect(frame.lowest_circle_position).to be_nil
@@ -185,13 +175,10 @@ RSpec.describe Frame, type: :model do
     end
   end
 
-  # ====================
-  # GeometryService Integration
-  # ====================
   describe 'GeometryService integration' do
     describe '.rectangles_overlap_or_touch?' do
       subject { GeometryService.rectangles_overlap_or_touch?(frame1, frame2) }
-      
+
       let(:frame1) { build(:frame, x_axis: 0, y_axis: 0, width: 50, height: 50) }
 
       context 'when rectangles do not overlap or touch' do
@@ -242,9 +229,6 @@ RSpec.describe Frame, type: :model do
     end
   end
 
-  # ====================
-  # Destruction
-  # ====================
   describe 'destruction' do
     context 'when frame has no circles' do
       let!(:frame) { create(:frame, x_axis: 0, y_axis: 0, width: 50, height: 50) }
@@ -280,9 +264,6 @@ RSpec.describe Frame, type: :model do
     end
   end
 
-  # ====================
-  # Nested Attributes
-  # ====================
   describe 'nested attributes for circles' do
     describe 'creating circles with frame' do
       let(:frame_attributes) do
@@ -314,13 +295,13 @@ RSpec.describe Frame, type: :model do
 
       it 'updates circle attributes' do
         expect {
-          frame.update(circles_attributes: [{ id: circle.id, x_axis: 30 }])
+          frame.update(circles_attributes: [ { id: circle.id, x_axis: 30 } ])
         }.to change { circle.reload.x_axis }.from(25).to(30)
       end
 
       it 'does not change circle count' do
         expect {
-          frame.update(circles_attributes: [{ id: circle.id, x_axis: 30 }])
+          frame.update(circles_attributes: [ { id: circle.id, x_axis: 30 } ])
         }.not_to change(Circle, :count)
       end
     end
@@ -331,7 +312,7 @@ RSpec.describe Frame, type: :model do
 
       it 'destroys circles when _destroy is true' do
         expect {
-          frame.update(circles_attributes: [{ id: circle.id, _destroy: true }])
+          frame.update(circles_attributes: [ { id: circle.id, _destroy: true } ])
         }.to change(Circle, :count).by(-1)
       end
     end
@@ -343,7 +324,7 @@ RSpec.describe Frame, type: :model do
           y_axis: 0,
           width: 100,
           height: 100,
-          circles_attributes: [{ x_axis: nil, y_axis: nil, diameter: nil }]
+          circles_attributes: [ { x_axis: nil, y_axis: nil, diameter: nil } ]
         }
       end
 
@@ -353,9 +334,6 @@ RSpec.describe Frame, type: :model do
     end
   end
 
-  # ====================
-  # Counter Cache
-  # ====================
   describe 'circle counter cache' do
     let(:frame) { create(:frame, :large) }
 
@@ -391,33 +369,29 @@ RSpec.describe Frame, type: :model do
 
     describe 'with multiple operations' do
       it 'maintains accurate count' do
-        # Create 5 circles with explicit positions
         create(:circle, frame: frame, x_axis: frame.x_axis + 10, y_axis: frame.y_axis + 10)
         create(:circle, frame: frame, x_axis: frame.x_axis + 30, y_axis: frame.y_axis + 10)
         create(:circle, frame: frame, x_axis: frame.x_axis + 50, y_axis: frame.y_axis + 10)
         create(:circle, frame: frame, x_axis: frame.x_axis + 70, y_axis: frame.y_axis + 10)
         create(:circle, frame: frame, x_axis: frame.x_axis + 10, y_axis: frame.y_axis + 30)
         expect(frame.reload.circle_count).to eq(5)
-        
+
         frame.circles.first.destroy
         expect(frame.reload.circle_count).to eq(4)
-        
+
         create(:circle, frame: frame, x_axis: frame.x_axis + 30, y_axis: frame.y_axis + 30)
         expect(frame.reload.circle_count).to eq(5)
       end
     end
   end
 
-  # ====================
-  # Circle Position Updates
-  # ====================
   describe 'circle position updates via callbacks' do
     let(:frame) { create(:frame, :large) }
 
     context 'when creating a circle' do
       it 'updates frame circle positions' do
         circle = create(:circle, frame: frame, x_axis: 25, y_axis: 30)
-        
+
         aggregate_failures do
           expect(frame.reload.highest_circle_position).to eq(30)
           expect(frame.reload.lowest_circle_position).to eq(30)
@@ -429,7 +403,7 @@ RSpec.describe Frame, type: :model do
       it 'updates positions with multiple circles' do
         create(:circle, frame: frame, x_axis: 10, y_axis: 10)
         create(:circle, frame: frame, x_axis: 90, y_axis: 90)
-        
+
         aggregate_failures do
           expect(frame.reload.highest_circle_position).to eq(10)
           expect(frame.reload.lowest_circle_position).to eq(90)
@@ -444,7 +418,7 @@ RSpec.describe Frame, type: :model do
 
       it 'recalculates frame positions' do
         circle.update(x_axis: 80, y_axis: 80)
-        
+
         aggregate_failures do
           expect(frame.reload.highest_circle_position).to eq(80)
           expect(frame.reload.rightmost_circle_position).to eq(80)
@@ -458,7 +432,7 @@ RSpec.describe Frame, type: :model do
 
       it 'recalculates frame positions' do
         circle2.destroy
-        
+
         aggregate_failures do
           expect(frame.reload.highest_circle_position).to eq(10)
           expect(frame.reload.lowest_circle_position).to eq(10)
@@ -470,7 +444,7 @@ RSpec.describe Frame, type: :model do
       it 'resets positions when last circle is removed' do
         circle1.destroy
         circle2.destroy
-        
+
         aggregate_failures do
           expect(frame.reload.highest_circle_position).to be_nil
           expect(frame.reload.lowest_circle_position).to be_nil
@@ -481,9 +455,6 @@ RSpec.describe Frame, type: :model do
     end
   end
 
-  # ====================
-  # Edge Cases
-  # ====================
   describe 'edge cases' do
     context 'with decimal precision' do
       subject { build(:frame, x_axis: 10.75, y_axis: 20.33, width: 50.99, height: 75.11) }
@@ -491,7 +462,7 @@ RSpec.describe Frame, type: :model do
 
       it 'stores decimal values correctly' do
         subject.save!
-        
+
         aggregate_failures do
           expect(subject.reload.x_axis).to eq(10.75)
           expect(subject.reload.y_axis).to eq(20.33)
@@ -526,7 +497,7 @@ RSpec.describe Frame, type: :model do
     context 'with zero or negative dimensions' do
       it 'is invalid with zero width' do
         frame = build(:frame, width: 0)
-        
+
         aggregate_failures do
           expect(frame).not_to be_valid
           expect(frame.errors[:width]).to be_present
@@ -535,7 +506,7 @@ RSpec.describe Frame, type: :model do
 
       it 'is invalid with zero height' do
         frame = build(:frame, height: 0)
-        
+
         aggregate_failures do
           expect(frame).not_to be_valid
           expect(frame.errors[:height]).to be_present
@@ -544,7 +515,7 @@ RSpec.describe Frame, type: :model do
 
       it 'is invalid with negative width' do
         frame = build(:frame, width: -10)
-        
+
         aggregate_failures do
           expect(frame).not_to be_valid
           expect(frame.errors[:width]).to be_present
@@ -553,7 +524,7 @@ RSpec.describe Frame, type: :model do
 
       it 'is invalid with negative height' do
         frame = build(:frame, height: -10)
-        
+
         aggregate_failures do
           expect(frame).not_to be_valid
           expect(frame.errors[:height]).to be_present
@@ -563,14 +534,14 @@ RSpec.describe Frame, type: :model do
 
     context 'with very large values' do
       subject do
-        build(:frame, 
+        build(:frame,
           x_axis: 999999.99,
           y_axis: 999999.99,
           width: 999999.99,
           height: 999999.99
         )
       end
-      
+
       it { is_expected.to be_valid }
     end
   end
