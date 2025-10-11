@@ -53,9 +53,16 @@ group :development, :test do
 
   # Faker for generating fake data [https://github.com/faker-ruby/faker]
   gem "faker", "~> 3.4"
+
+  # Swagger/OpenAPI specs [https://github.com/rswag/rswag]
+  gem "rswag-specs"
 end
 
 group :test do
   # Shoulda Matchers for simple one-liners [https://github.com/thoughtbot/shoulda-matchers]
   gem "shoulda-matchers", "~> 6.0"
 end
+
+# Swagger UI and API documentation
+gem "rswag-api"
+gem "rswag-ui"

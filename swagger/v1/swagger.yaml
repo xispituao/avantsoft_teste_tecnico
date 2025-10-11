@@ -1,0 +1,239 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/frames/{frame_id}/circles":
+    parameters:
+    - name: frame_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    post:
+      summary: Adiciona circle ao frame
+      tags:
+      - Circles
+      parameters: []
+      responses:
+        '201':
+          description: circle criado
+        '422':
+          description: circle não cabe no frame
+        '404':
+          description: frame não encontrado
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                circle:
+                  type: object
+                  properties:
+                    x_axis:
+                      type: number
+                    y_axis:
+                      type: number
+                    diameter:
+                      type: number
+                  required:
+                  - x_axis
+                  - y_axis
+                  - diameter
+  "/circles":
+    get:
+      summary: Lista circles com filtro por raio
+      tags:
+      - Circles
+      description: Lista circles dentro de raio especificado, opcionalmente filtrados
+        por frame
+      parameters:
+      - name: center_x
+        in: query
+        required: false
+        schema:
+          type: number
+      - name: center_y
+        in: query
+        required: false
+        schema:
+          type: number
+      - name: radius
+        in: query
+        required: false
+        schema:
+          type: number
+      - name: frame_id
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: circles filtrados por raio
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    frame_id:
+                      type: integer
+                    x_axis:
+                      type: number
+                    y_axis:
+                      type: number
+                    diameter:
+                      type: number
+  "/circles/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    put:
+      summary: Atualiza posição do circle
+      tags:
+      - Circles
+      parameters: []
+      responses:
+        '200':
+          description: circle atualizado
+        '422':
+          description: posição inválida
+        '404':
+          description: circle não encontrado
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                circle:
+                  type: object
+                  properties:
+                    x_axis:
+                      type: number
+                    y_axis:
+                      type: number
+    delete:
+      summary: Remove circle
+      tags:
+      - Circles
+      responses:
+        '204':
+          description: circle removido
+        '404':
+          description: circle não encontrado
+  "/frames":
+    post:
+      summary: Cria um novo frame
+      tags:
+      - Frames
+      description: Cria frame e opcionalmente circles aninhados
+      parameters: []
+      responses:
+        '201':
+          description: frame criado com circles
+        '422':
+          description: frame sobrepõe outro
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                frame:
+                  type: object
+                  properties:
+                    x_axis:
+                      type: number
+                    y_axis:
+                      type: number
+                    width:
+                      type: number
+                    height:
+                      type: number
+                    circles_attributes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          x_axis:
+                            type: number
+                          y_axis:
+                            type: number
+                          diameter:
+                            type: number
+                  required:
+                  - x_axis
+                  - y_axis
+                  - width
+                  - height
+  "/frames/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Retorna detalhes do frame com métricas
+      tags:
+      - Frames
+      description: Retorna frame com total de circles e posições extremas
+      responses:
+        '200':
+          description: frame encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  x_axis:
+                    type: string
+                  y_axis:
+                    type: string
+                  width:
+                    type: string
+                  height:
+                    type: string
+                  circle_count:
+                    type: integer
+                  highest_circle_position:
+                    type: string
+                    nullable: true
+                  lowest_circle_position:
+                    type: string
+                    nullable: true
+                  leftmost_circle_position:
+                    type: string
+                    nullable: true
+                  rightmost_circle_position:
+                    type: string
+                    nullable: true
+        '404':
+          description: frame não encontrado
+    delete:
+      summary: Remove frame
+      tags:
+      - Frames
+      description: Remove frame apenas se não houver circles associados
+      responses:
+        '204':
+          description: frame removido
+        '422':
+          description: frame possui circles
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
