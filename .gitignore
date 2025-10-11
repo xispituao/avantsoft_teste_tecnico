@@ -1,0 +1,183 @@
+# Rails + Docker + PostgreSQL - Project Gitignore
+# See https://help.github.com/articles/ignoring-files for more about ignoring files.
+
+# ===========================================
+# RAILS SPECIFIC
+# ===========================================
+
+# Ignore bundler config
+/.bundle
+/vendor/bundle
+
+# Ignore all logfiles and tempfiles
+/log/*
+!/log/.keep
+
+# Ignore tmp directory content but keep structure
+/tmp/*
+!/tmp/.keep
+!/tmp/pids/
+!/tmp/pids/.keep
+!/tmp/storage/
+!/tmp/storage/.keep
+/tmp/pids/*
+!/tmp/pids/.keep
+/tmp/storage/*
+!/tmp/storage/.keep
+
+# Ignore storage (uploaded files in development)
+/storage/*
+!/storage/.keep
+
+# Ignore public assets
+/public/assets
+/public/packs
+/public/packs-test
+/node_modules
+
+# Ignore master key for decrypting credentials
+/config/master.key
+/config/credentials/*.key
+
+# Ignore database files (PostgreSQL)
+*.sqlite3
+*.sqlite3-*
+
+# Rails 7+ - Solid Queue, Cache, Cable
+/db/*.sqlite3
+/db/*.sqlite3-*
+
+# Propshaft/Importmap
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+# ===========================================
+# DOCKER SPECIFIC
+# ===========================================
+
+# Docker volumes and data
+/docker-data/
+/postgres-data/
+/redis-data/
+
+# ===========================================
+# ENVIRONMENT & CONFIG
+# ===========================================
+
+# Environment files apenas na raiz deste diretório
+# (permite .env em subdiretórios como development/, staging/, production/)
+/.env
+/.env.local
+/.env.*.local
+
+# ===========================================
+# DEVELOPMENT & TESTING
+# ===========================================
+
+# Coverage reports
+/coverage/
+.nyc_output/
+
+# RSpec
+.rspec_status
+
+# Test databases
+/test.sqlite3
+/test.sqlite3-journal
+
+# Capybara screenshots
+/tmp/capybara/
+
+# Spring
+/spring/*.pid
+
+# Byebug
+.byebug_history
+
+# Minitest
+/minitest-report.xml
+
+# Test artifacts
+/test-reports/
+/spec/reports/
+
+# Cucumber
+/cucumber.log
+
+# FactoryBot
+/factory_bot_sequences.rb
+
+# Test fixtures
+/test/fixtures/files/
+
+# Performance testing
+/benchmark_results/
+
+# ===========================================
+# ASSETS & COMPILATION
+# ===========================================
+
+# Yarn
+yarn-error.log
+.yarn-integrity
+
+# Webpacker
+/public/packs-test/
+
+# ===========================================
+# IDE & EDITORS
+# ===========================================
+
+# VSCode
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.sample
+
+# RubyMine / IntelliJ
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+.vim/
+.nvim/
+
+# Emacs
+*~
+\#*\#
+.#*
+
+# Cursor
+.cursor/
+
+# Fleet
+.fleet/
+
+# Zed
+.zed/
+
+# ===========================================
+# OS SPECIFIC
+# ===========================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
