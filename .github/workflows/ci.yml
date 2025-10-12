@@ -14,6 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set UID/GID for Docker
+        run: |
+          echo "UID=$(id -u)" >> $GITHUB_ENV
+          echo "GID=$(id -g)" >> $GITHUB_ENV
+
       - name: Copy environment file
         run: cp base_files/development/.env .env
 
@@ -31,6 +36,18 @@ jobs:
 
       - name: Run RSpec tests
         run: docker compose -f docker-compose.yml --env-file .env exec -T app bundle exec rspec
+
+      - name: Generate Swagger documentation
+        run: docker compose -f docker-compose.yml --env-file .env exec -T app bundle exec rake rswag:specs:swaggerize
+
+      - name: Verify Swagger documentation is up to date
+        run: |
+          if ! git diff --quiet swagger/; then
+            echo "ERROR: Swagger documentation is out of date!"
+            echo "Please run 'make swagger' and commit the changes."
+            git diff swagger/
+            exit 1
+          fi
 
       - name: Show logs on failure
         if: failure()

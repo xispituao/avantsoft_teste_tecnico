@@ -1,0 +1,46 @@
+pt-BR:
+  activerecord:
+    models:
+      frame: Quadro
+      circle: Círculo
+    attributes:
+      frame:
+        x_axis: Posição X
+        y_axis: Posição Y
+        width: Largura
+        height: Altura
+        circle_count: Total de círculos
+        highest_circle_position: Posição do círculo mais alto
+        lowest_circle_position: Posição do círculo mais baixo
+        leftmost_circle_position: Posição do círculo mais à esquerda
+        rightmost_circle_position: Posição do círculo mais à direita
+      circle:
+        x_axis: Posição X
+        y_axis: Posição Y
+        diameter: Diâmetro
+        frame_id: ID do Quadro
+    errors:
+      models:
+        frame:
+          attributes:
+            base:
+              no_overlap: "Quadro não pode sobrepor ou tocar outro quadro"
+        circle:
+          attributes:
+            base:
+              fits_in_frame: "Círculo deve caber completamente dentro do quadro"
+              no_overlap: "Círculo não pode sobrepor ou tocar outro círculo"
+
+  errors:
+    messages:
+      missing_parameters: "Parâmetros obrigatórios faltando: %{params}"
+      not_found: "%{model} não encontrado"
+      cannot_delete_with_associations: "Não é possível deletar %{model} com %{association}"
+    
+    models:
+      frame:
+        not_found: "Quadro não encontrado"
+        cannot_delete_with_circles: "Não é possível deletar quadro com círculos"
+      circle:
+        not_found: "Círculo não encontrado"
+

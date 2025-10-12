@@ -117,7 +117,7 @@ RSpec.describe Frame, type: :model do
               reference_frame.assign_attributes(x_axis: 100, y_axis: 100)
               expect(reference_frame).not_to be_valid
               expect(reference_frame.errors[:base])
-                .to include(I18n.t('models.frame.errors.no_frame_overlap'))
+                .to include(I18n.t('activerecord.errors.models.frame.attributes.base.no_overlap'))
             end
           end
         end
@@ -175,9 +175,9 @@ RSpec.describe Frame, type: :model do
     end
   end
 
-  describe 'GeometryService integration' do
+  describe 'GeometryHelper integration' do
     describe '.rectangles_overlap_or_touch?' do
-      subject { GeometryService.rectangles_overlap_or_touch?(frame1, frame2) }
+      subject { GeometryHelper.rectangles_overlap_or_touch?(frame1, frame2) }
 
       let(:frame1) { build(:frame, x_axis: 0, y_axis: 0, width: 50, height: 50) }
 
@@ -388,62 +388,14 @@ RSpec.describe Frame, type: :model do
   describe 'circle position updates via callbacks' do
     let(:frame) { create(:frame, :large) }
 
-    context 'when creating a circle' do
-      it 'updates frame circle positions' do
-        circle = create(:circle, frame: frame, x_axis: 25, y_axis: 30)
-
-        aggregate_failures do
-          expect(frame.reload.highest_circle_position).to eq(30)
-          expect(frame.reload.lowest_circle_position).to eq(30)
-          expect(frame.reload.leftmost_circle_position).to eq(25)
-          expect(frame.reload.rightmost_circle_position).to eq(25)
-        end
-      end
-
-      it 'updates positions with multiple circles' do
-        create(:circle, frame: frame, x_axis: 10, y_axis: 10)
-        create(:circle, frame: frame, x_axis: 90, y_axis: 90)
-
-        aggregate_failures do
-          expect(frame.reload.highest_circle_position).to eq(10)
-          expect(frame.reload.lowest_circle_position).to eq(90)
-          expect(frame.reload.leftmost_circle_position).to eq(10)
-          expect(frame.reload.rightmost_circle_position).to eq(90)
-        end
-      end
-    end
-
-    context 'when updating a circle position' do
-      let!(:circle) { create(:circle, frame: frame, x_axis: 50, y_axis: 50) }
-
-      it 'recalculates frame positions' do
-        circle.update(x_axis: 80, y_axis: 80)
-
-        aggregate_failures do
-          expect(frame.reload.highest_circle_position).to eq(80)
-          expect(frame.reload.rightmost_circle_position).to eq(80)
-        end
-      end
-    end
-
-    context 'when destroying a circle' do
+    context 'when destroying all circles' do
       let!(:circle1) { create(:circle, frame: frame, x_axis: 10, y_axis: 10) }
       let!(:circle2) { create(:circle, frame: frame, x_axis: 90, y_axis: 90) }
-
-      it 'recalculates frame positions' do
-        circle2.destroy
-
-        aggregate_failures do
-          expect(frame.reload.highest_circle_position).to eq(10)
-          expect(frame.reload.lowest_circle_position).to eq(10)
-          expect(frame.reload.leftmost_circle_position).to eq(10)
-          expect(frame.reload.rightmost_circle_position).to eq(10)
-        end
-      end
 
       it 'resets positions when last circle is removed' do
         circle1.destroy
         circle2.destroy
+        frame.update_circle_positions!
 
         aggregate_failures do
           expect(frame.reload.highest_circle_position).to be_nil
