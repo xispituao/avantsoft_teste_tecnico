@@ -10,7 +10,7 @@ class FramesController < ApplicationController
     if @frame.persisted?
       render json: @frame, serializer: FrameSerializer, status: :created
     else
-      render json: { errors: @frame.errors }, status: :unprocessable_entity
+      render json: { errors: @frame.errors }, status: :unprocessable_content
     end
   end
 
@@ -26,7 +26,7 @@ class FramesController < ApplicationController
     if result[:success]
       head :no_content
     else
-      render json: { error: result[:error] }, status: :unprocessable_entity
+      render json: { error: result[:error] }, status: :unprocessable_content
     end
   end
 

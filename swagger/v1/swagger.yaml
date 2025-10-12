@@ -113,6 +113,18 @@ paths:
         description: ID do frame (opcional)
         schema:
           type: integer
+      - name: page
+        in: query
+        required: false
+        description: 'Número da página (padrão: 1)'
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: 'Itens por página (padrão: 25)'
+        schema:
+          type: integer
       responses:
         '400':
           description: parâmetros obrigatórios faltando
@@ -126,7 +138,20 @@ paths:
                 required:
                 - error
         '200':
-          description: circles filtrados por raio
+          description: circles paginados
+          headers:
+            X-Total-Count:
+              type: integer
+              description: Total de registros
+            X-Total-Pages:
+              type: integer
+              description: Total de páginas
+            X-Current-Page:
+              type: integer
+              description: Página atual
+            X-Per-Page:
+              type: integer
+              description: Itens por página
           content:
             application/json:
               schema:

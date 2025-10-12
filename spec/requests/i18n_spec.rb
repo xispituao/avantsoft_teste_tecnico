@@ -23,7 +23,7 @@ RSpec.describe 'I18n Support', type: :request do
              headers: { 'Accept-Language': 'pt-BR' },
              as: :json
         
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         data = JSON.parse(response.body)
         expect(data['errors']).to be_present
       end
@@ -52,7 +52,7 @@ RSpec.describe 'I18n Support', type: :request do
              headers: { 'Accept-Language': 'en' },
              as: :json
         
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         data = JSON.parse(response.body)
         expect(data['errors']).to be_present
       end

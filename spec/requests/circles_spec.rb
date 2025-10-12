@@ -57,6 +57,8 @@ RSpec.describe 'Circles API', type: :request do
       parameter name: :center_y, in: :query, type: :number, required: true, description: 'Coordenada Y do centro'
       parameter name: :radius, in: :query, type: :number, required: true, description: 'Raio de busca'
       parameter name: :frame_id, in: :query, type: :integer, required: false, description: 'ID do frame (opcional)'
+      parameter name: :page, in: :query, type: :integer, required: false, description: 'Número da página (padrão: 1)'
+      parameter name: :per_page, in: :query, type: :integer, required: false, description: 'Itens por página (padrão: 25)'
 
       response '400', 'parâmetros obrigatórios faltando' do
         schema SwaggerSchemas::ERROR
@@ -114,6 +116,11 @@ RSpec.describe 'Circles API', type: :request do
 
       response '200', 'circles filtrados por raio' do
         schema SwaggerSchemas::CIRCLES_ARRAY
+        header 'X-Total-Count', type: :integer, description: 'Total de registros'
+        header 'X-Total-Pages', type: :integer, description: 'Total de páginas'
+        header 'X-Current-Page', type: :integer, description: 'Página atual'
+        header 'X-Per-Page', type: :integer, description: 'Itens por página'
+        
         let(:test_frame) { create(:frame, x_axis: 0, y_axis: 0, width: 100, height: 100) }
         let!(:circle_inside) { create(:circle, frame: test_frame, x_axis: 5, y_axis: 5, diameter: 2) }
         let!(:circle_outside) { create(:circle, frame: test_frame, x_axis: 50, y_axis: 50, diameter: 2) }
@@ -121,11 +128,44 @@ RSpec.describe 'Circles API', type: :request do
         let(:center_y) { 0 }
         let(:radius) { 10 }
         let(:frame_id) { nil }
+        let(:page) { nil }
+        let(:per_page) { nil }
 
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data.size).to eq(1)
           expect(data.first['id']).to eq(circle_inside.id)
+          expect(response.headers['X-Total-Count']).to be_present
+          expect(response.headers['X-Current-Page']).to eq('1')
+        end
+      end
+
+      response '200', 'circles paginados' do
+        schema SwaggerSchemas::CIRCLES_ARRAY
+        header 'X-Total-Count', type: :integer
+        header 'X-Total-Pages', type: :integer
+        header 'X-Current-Page', type: :integer
+        header 'X-Per-Page', type: :integer
+        
+        let(:test_frame) { create(:frame, x_axis: 0, y_axis: 0, width: 200, height: 200) }
+        let!(:circles_list) do
+          30.times.map do |i|
+            create(:circle, frame: test_frame, x_axis: 10 + (i * 5), y_axis: 10, diameter: 2)
+          end
+        end
+        let(:center_x) { 0 }
+        let(:center_y) { 0 }
+        let(:radius) { 200 }
+        let(:frame_id) { nil }
+        let(:page) { 2 }
+        let(:per_page) { 10 }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data.size).to eq(10)
+          expect(response.headers['X-Total-Count'].to_i).to be >= 30
+          expect(response.headers['X-Current-Page']).to eq('2')
+          expect(response.headers['X-Per-Page']).to eq('10')
         end
       end
     end

@@ -8,6 +8,8 @@ module Circles
       @center_x = params[:center_x]
       @center_y = params[:center_y]
       @radius = params[:radius]
+      @page = params[:page]
+      @per_page = params[:per_page]
     end
 
     def call
@@ -16,6 +18,7 @@ module Circles
       circles = Circle.all
       circles = filter_by_frame(circles) if @frame_id.present?
       circles = filter_by_radius(circles)
+      circles = paginate(circles)
       circles
     end
 
@@ -39,23 +42,14 @@ module Circles
       center_y = @center_y.to_f
       radius = @radius.to_f
 
-      circles = circles.where(
-        "x_axis BETWEEN ? AND ?",
-        center_x - radius,
-        center_x + radius
-      ).where(
-        "y_axis BETWEEN ? AND ?",
-        center_y - radius,
-        center_y + radius
+      circles.where(
+        "SQRT(POWER(x_axis - ?, 2) + POWER(y_axis - ?, 2)) + (diameter / 2.0) <= ?",
+        center_x, center_y, radius
       )
+    end
 
-      circles.select do |circle|
-        distance = GeometryHelper.euclidean_distance(
-          center_x, center_y,
-          circle.x_axis, circle.y_axis
-        )
-        distance + circle.radius <= radius
-      end
+    def paginate(circles)
+      circles.page(@page).per(@per_page)
     end
   end
 end
