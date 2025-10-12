@@ -7,7 +7,10 @@ module Circles
     end
 
     def call
-      @circle.destroy
+      frame = @circle.frame
+      if @circle.destroy
+        frame.update_circle_positions!
+      end
     end
   end
 end

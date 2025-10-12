@@ -9,7 +9,9 @@ module Circles
 
     def call
       @circle = @frame.circles.new(@attributes)
-      @circle.save
+      if @circle.save
+        @frame.update_circle_positions!
+      end
       @circle
     end
   end

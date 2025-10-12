@@ -388,62 +388,14 @@ RSpec.describe Frame, type: :model do
   describe 'circle position updates via callbacks' do
     let(:frame) { create(:frame, :large) }
 
-    context 'when creating a circle' do
-      it 'updates frame circle positions' do
-        circle = create(:circle, frame: frame, x_axis: 25, y_axis: 30)
-
-        aggregate_failures do
-          expect(frame.reload.highest_circle_position).to eq(30)
-          expect(frame.reload.lowest_circle_position).to eq(30)
-          expect(frame.reload.leftmost_circle_position).to eq(25)
-          expect(frame.reload.rightmost_circle_position).to eq(25)
-        end
-      end
-
-      it 'updates positions with multiple circles' do
-        create(:circle, frame: frame, x_axis: 10, y_axis: 10)
-        create(:circle, frame: frame, x_axis: 90, y_axis: 90)
-
-        aggregate_failures do
-          expect(frame.reload.highest_circle_position).to eq(10)
-          expect(frame.reload.lowest_circle_position).to eq(90)
-          expect(frame.reload.leftmost_circle_position).to eq(10)
-          expect(frame.reload.rightmost_circle_position).to eq(90)
-        end
-      end
-    end
-
-    context 'when updating a circle position' do
-      let!(:circle) { create(:circle, frame: frame, x_axis: 50, y_axis: 50) }
-
-      it 'recalculates frame positions' do
-        circle.update(x_axis: 80, y_axis: 80)
-
-        aggregate_failures do
-          expect(frame.reload.highest_circle_position).to eq(80)
-          expect(frame.reload.rightmost_circle_position).to eq(80)
-        end
-      end
-    end
-
-    context 'when destroying a circle' do
+    context 'when destroying all circles' do
       let!(:circle1) { create(:circle, frame: frame, x_axis: 10, y_axis: 10) }
       let!(:circle2) { create(:circle, frame: frame, x_axis: 90, y_axis: 90) }
-
-      it 'recalculates frame positions' do
-        circle2.destroy
-
-        aggregate_failures do
-          expect(frame.reload.highest_circle_position).to eq(10)
-          expect(frame.reload.lowest_circle_position).to eq(10)
-          expect(frame.reload.leftmost_circle_position).to eq(10)
-          expect(frame.reload.rightmost_circle_position).to eq(10)
-        end
-      end
 
       it 'resets positions when last circle is removed' do
         circle1.destroy
         circle2.destroy
+        frame.update_circle_positions!
 
         aggregate_failures do
           expect(frame.reload.highest_circle_position).to be_nil

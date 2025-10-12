@@ -61,30 +61,66 @@ RSpec.describe 'Circles API', type: :request do
       produces 'application/json'
       description 'Lista circles dentro de raio especificado, opcionalmente filtrados por frame'
 
-      parameter name: :center_x, in: :query, type: :number, required: false
-      parameter name: :center_y, in: :query, type: :number, required: false
-      parameter name: :radius, in: :query, type: :number, required: false
-      parameter name: :frame_id, in: :query, type: :integer, required: false
+      parameter name: :center_x, in: :query, type: :number, required: true, description: 'Coordenada X do centro'
+      parameter name: :center_y, in: :query, type: :number, required: true, description: 'Coordenada Y do centro'
+      parameter name: :radius, in: :query, type: :number, required: true, description: 'Raio de busca'
+      parameter name: :frame_id, in: :query, type: :integer, required: false, description: 'ID do frame (opcional)'
 
-      response '200', 'lista de circles' do
-        schema type: :array,
-          items: {
-            type: :object,
-            properties: {
-              id: { type: :integer },
-              frame_id: { type: :integer },
-              x_axis: { type: :number },
-              y_axis: { type: :number },
-              diameter: { type: :number }
-            }
+      response '400', 'parâmetros obrigatórios faltando' do
+        schema type: :object,
+          properties: {
+            error: { type: :string }
           }
 
-        let(:center_x) { nil }
-        let(:center_y) { nil }
-        let(:radius) { nil }
-        let(:frame_id) { nil }
+        context 'sem center_x' do
+          let(:center_x) { nil }
+          let(:center_y) { 0 }
+          let(:radius) { 10 }
+          let(:frame_id) { nil }
 
-        run_test!
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            expect(data['error']).to include('center_x')
+          end
+        end
+
+        context 'sem center_y' do
+          let(:center_x) { 0 }
+          let(:center_y) { nil }
+          let(:radius) { 10 }
+          let(:frame_id) { nil }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            expect(data['error']).to include('center_y')
+          end
+        end
+
+        context 'sem radius' do
+          let(:center_x) { 0 }
+          let(:center_y) { 0 }
+          let(:radius) { nil }
+          let(:frame_id) { nil }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            expect(data['error']).to include('radius')
+          end
+        end
+
+        context 'sem nenhum parâmetro' do
+          let(:center_x) { nil }
+          let(:center_y) { nil }
+          let(:radius) { nil }
+          let(:frame_id) { nil }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            expect(data['error']).to include('center_x')
+            expect(data['error']).to include('center_y')
+            expect(data['error']).to include('radius')
+          end
+        end
       end
 
       response '200', 'circles filtrados por raio' do

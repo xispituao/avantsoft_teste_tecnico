@@ -186,22 +186,6 @@ RSpec.describe Circle, type: :model do
   end
 
   describe 'callbacks' do
-    let(:frame) { create(:frame, :large) }
-
-    describe 'after_save' do
-      it 'updates frame circle positions' do
-        expect_any_instance_of(Frame).to receive(:update_circle_positions!).at_least(:once)
-        create(:circle, frame: frame)
-      end
-    end
-
-    describe 'after_destroy' do
-      it 'updates frame circle positions' do
-        circle = create(:circle, frame: frame)
-        expect(frame).to receive(:update_circle_positions!)
-        circle.destroy
-      end
-    end
   end
 
   describe 'edge cases' do

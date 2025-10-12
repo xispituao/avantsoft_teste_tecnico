@@ -10,13 +10,18 @@ class Frame < ApplicationRecord
   validate :no_frame_overlap
 
   def update_circle_positions!
-    return reset_circle_positions! if circles.empty?
+    positions = circles.pluck(:x_axis, :y_axis)
+    
+    return reset_circle_positions! if positions.empty?
+
+    x_positions = positions.map(&:first)
+    y_positions = positions.map(&:last)
 
     update_columns(
-      highest_circle_position: circles.minimum(:y_axis),
-      lowest_circle_position: circles.maximum(:y_axis),
-      leftmost_circle_position: circles.minimum(:x_axis),
-      rightmost_circle_position: circles.maximum(:x_axis)
+      highest_circle_position: y_positions.min,
+      lowest_circle_position: y_positions.max,
+      leftmost_circle_position: x_positions.min,
+      rightmost_circle_position: x_positions.max
     )
   end
 

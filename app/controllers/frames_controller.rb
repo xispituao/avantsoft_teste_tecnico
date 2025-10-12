@@ -5,7 +5,7 @@ class FramesController < ApplicationController
 
   # POST /frames
   def create
-    @frame = Frames::CreateService.new(attributes: frame_params).call
+    @frame = Frames::CreateService.call(attributes: frame_params)
 
     if @frame.persisted?
       render json: @frame, serializer: FrameSerializer, status: :created
@@ -21,7 +21,7 @@ class FramesController < ApplicationController
 
   # DELETE /frames/:id
   def destroy
-    result = Frames::DestroyService.new(frame: @frame).call
+    result = Frames::DestroyService.call(frame: @frame)
 
     if result[:success]
       head :no_content

@@ -9,9 +9,6 @@ class Circle < ApplicationRecord
   validate :circle_fits_in_frame
   validate :no_circle_overlap
 
-  after_save :update_frame_circle_positions
-  after_destroy :update_frame_circle_positions
-
   def radius
     @radius ||= diameter / 2.0
   end
@@ -43,9 +40,5 @@ class Circle < ApplicationRecord
     if overlapping_circle
       errors.add(:base, I18n.t("models.circle.errors.no_circle_overlap"))
     end
-  end
-
-  def update_frame_circle_positions
-    frame.update_circle_positions! if frame
   end
 end

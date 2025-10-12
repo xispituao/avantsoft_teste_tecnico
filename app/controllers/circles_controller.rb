@@ -6,13 +6,15 @@ class CirclesController < ApplicationController
 
   # GET /circles?center_x=X&center_y=Y&radius=R&frame_id=ID
   def index
-    circles = Circles::FilterService.new(params).call
+    circles = Circles::FilterService.call(params)
     render json: circles, each_serializer: CircleSerializer
+  rescue MissingParametersError => e
+    render json: { error: e.message }, status: :bad_request
   end
 
   # POST /frames/:frame_id/circles
   def create
-    @circle = Circles::CreateService.new(frame: @frame, attributes: circle_params).call
+    @circle = Circles::CreateService.call(frame: @frame, attributes: circle_params)
 
     if @circle.persisted?
       render json: @circle, serializer: CircleSerializer, status: :created
@@ -23,7 +25,7 @@ class CirclesController < ApplicationController
 
   # PUT /circles/:id
   def update
-    circle = Circles::UpdateService.new(circle: @circle, attributes: circle_params).call
+    circle = Circles::UpdateService.call(circle: @circle, attributes: circle_params)
 
     if circle.errors.empty?
       render json: circle, serializer: CircleSerializer
@@ -34,7 +36,7 @@ class CirclesController < ApplicationController
 
   # DELETE /circles/:id
   def destroy
-    Circles::DestroyService.new(circle: @circle).call
+    Circles::DestroyService.call(circle: @circle)
     head :no_content
   end
 

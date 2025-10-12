@@ -8,7 +8,9 @@ module Frames
 
     def call
       @frame = Frame.new(@attributes)
-      @frame.save
+      if @frame.save
+        @frame.update_circle_positions! if @frame.circles.any?
+      end
       @frame
     end
   end

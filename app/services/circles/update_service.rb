@@ -8,7 +8,9 @@ module Circles
     end
 
     def call
-      @circle.update(@attributes)
+      if @circle.update(@attributes)
+        @circle.frame.update_circle_positions!
+      end
       @circle
     end
   end
