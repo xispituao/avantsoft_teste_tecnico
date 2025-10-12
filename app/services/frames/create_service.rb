@@ -15,4 +15,3 @@ module Frames
     end
   end
 end
-

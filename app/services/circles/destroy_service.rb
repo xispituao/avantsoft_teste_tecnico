@@ -14,4 +14,3 @@ module Circles
     end
   end
 end
-

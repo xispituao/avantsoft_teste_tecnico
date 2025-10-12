@@ -44,4 +44,3 @@ class FrameSerializer < ActiveModel::Serializer
     object.rightmost_circle_position&.to_f
   end
 end
-

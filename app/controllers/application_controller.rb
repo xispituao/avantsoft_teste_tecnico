@@ -13,12 +13,12 @@ class ApplicationController < ActionController::API
   end
 
   def extract_locale_from_accept_language_header
-    return nil unless request.headers['Accept-Language']
-    
-    accept_language = request.headers['Accept-Language']
-    return 'pt-BR' if accept_language.match?(/pt-BR/i) || accept_language.match?(/pt/i)
-    return 'en' if accept_language.match?(/en/i)
-    
+    return nil unless request.headers["Accept-Language"]
+
+    accept_language = request.headers["Accept-Language"]
+    return "pt-BR" if accept_language.match?(/pt-BR/i) || accept_language.match?(/pt/i)
+    return "en" if accept_language.match?(/en/i)
+
     nil
   end
 end

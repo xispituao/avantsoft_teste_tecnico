@@ -14,7 +14,7 @@ module Circles
 
     def call
       validate_required_params!
-      
+
       circles = Circle.all
       circles = filter_by_frame(circles) if @frame_id.present?
       circles = filter_by_radius(circles)
@@ -30,10 +30,10 @@ module Circles
 
     def validate_required_params!
       missing = []
-      missing << 'center_x' if @center_x.blank?
-      missing << 'center_y' if @center_y.blank?
-      missing << 'radius' if @radius.blank?
-      
+      missing << "center_x" if @center_x.blank?
+      missing << "center_y" if @center_y.blank?
+      missing << "radius" if @radius.blank?
+
       raise MissingParametersError.new(missing) if missing.any?
     end
 
@@ -53,4 +53,3 @@ module Circles
     end
   end
 end
-

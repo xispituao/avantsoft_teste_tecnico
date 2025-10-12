@@ -15,4 +15,3 @@ class CircleSerializer < ActiveModel::Serializer
     object.diameter.to_f
   end
 end
-

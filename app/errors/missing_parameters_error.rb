@@ -9,7 +9,6 @@ class MissingParametersError < StandardError
   end
 
   def message
-    I18n.t('errors.messages.missing_parameters', params: missing_params.join(', '))
+    I18n.t("errors.messages.missing_parameters", params: missing_params.join(", "))
   end
 end
-

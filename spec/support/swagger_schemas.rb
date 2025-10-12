@@ -93,4 +93,3 @@ module SwaggerSchemas
     required: %w[errors]
   }.freeze
 end
-

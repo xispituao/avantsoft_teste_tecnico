@@ -4,7 +4,7 @@ require 'swagger_helper'
 
 RSpec.describe 'Circles API', type: :request do
   include SwaggerSchemas
-  
+
   before { host! 'localhost:3000' }
 
   path '/frames/{frame_id}/circles' do
@@ -120,7 +120,7 @@ RSpec.describe 'Circles API', type: :request do
         header 'X-Total-Pages', type: :integer, description: 'Total de páginas'
         header 'X-Current-Page', type: :integer, description: 'Página atual'
         header 'X-Per-Page', type: :integer, description: 'Itens por página'
-        
+
         let(:test_frame) { create(:frame, x_axis: 0, y_axis: 0, width: 100, height: 100) }
         let!(:circle_inside) { create(:circle, frame: test_frame, x_axis: 5, y_axis: 5, diameter: 2) }
         let!(:circle_outside) { create(:circle, frame: test_frame, x_axis: 50, y_axis: 50, diameter: 2) }
@@ -146,7 +146,7 @@ RSpec.describe 'Circles API', type: :request do
         header 'X-Total-Pages', type: :integer
         header 'X-Current-Page', type: :integer
         header 'X-Per-Page', type: :integer
-        
+
         let(:test_frame) { create(:frame, x_axis: 0, y_axis: 0, width: 200, height: 200) }
         let!(:circles_list) do
           30.times.map do |i|

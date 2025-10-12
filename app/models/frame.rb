@@ -11,7 +11,7 @@ class Frame < ApplicationRecord
 
   def update_circle_positions!
     positions = circles.pluck(:x_axis, :y_axis)
-    
+
     return reset_circle_positions! if positions.empty?
 
     x_positions = positions.map(&:first)

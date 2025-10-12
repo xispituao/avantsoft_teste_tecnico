@@ -46,13 +46,13 @@ class CirclesController < ApplicationController
   def set_frame
     @frame = Frame.find(params[:frame_id])
   rescue ActiveRecord::RecordNotFound
-    render json: { error: I18n.t('errors.models.frame.not_found') }, status: :not_found
+    render json: { error: I18n.t("errors.models.frame.not_found") }, status: :not_found
   end
 
   def set_circle
     @circle = Circle.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    render json: { error: I18n.t('errors.models.circle.not_found') }, status: :not_found
+    render json: { error: I18n.t("errors.models.circle.not_found") }, status: :not_found
   end
 
   def circle_params
@@ -60,9 +60,9 @@ class CirclesController < ApplicationController
   end
 
   def add_pagination_headers(collection)
-    response.headers['X-Total-Count'] = collection.total_count.to_s
-    response.headers['X-Total-Pages'] = collection.total_pages.to_s
-    response.headers['X-Current-Page'] = collection.current_page.to_s
-    response.headers['X-Per-Page'] = collection.limit_value.to_s
+    response.headers["X-Total-Count"] = collection.total_count.to_s
+    response.headers["X-Total-Pages"] = collection.total_pages.to_s
+    response.headers["X-Current-Page"] = collection.current_page.to_s
+    response.headers["X-Per-Page"] = collection.limit_value.to_s
   end
 end

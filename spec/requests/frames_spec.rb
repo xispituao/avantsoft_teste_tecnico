@@ -4,7 +4,7 @@ require 'swagger_helper'
 
 RSpec.describe 'Frames API', type: :request do
   include SwaggerSchemas
-  
+
   before { host! 'localhost:3000' }
 
   path '/frames' do

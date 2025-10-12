@@ -28,4 +28,3 @@ module GeometryHelper
     distance <= sum_of_radii
   end
 end
-
