@@ -44,14 +44,14 @@ class CirclesController < ApplicationController
 
   def set_frame
     @frame = Frame.find(params[:frame_id])
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { error: e.message }, status: :not_found
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: I18n.t('errors.models.frame.not_found') }, status: :not_found
   end
 
   def set_circle
     @circle = Circle.find(params[:id])
-  rescue ActiveRecord::RecordNotFound => e
-    render json: { error: e.message }, status: :not_found
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: I18n.t('errors.models.circle.not_found') }, status: :not_found
   end
 
   def circle_params

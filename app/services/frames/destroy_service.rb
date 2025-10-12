@@ -8,7 +8,7 @@ module Frames
 
     def call
       if @frame.circles.any?
-        { success: false, error: "Cannot delete frame with circles" }
+        { success: false, error: I18n.t('errors.models.frame.cannot_delete_with_circles') }
       else
         @frame.destroy
         { success: true, error: nil }

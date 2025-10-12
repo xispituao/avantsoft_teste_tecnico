@@ -39,7 +39,7 @@ class Frame < ApplicationRecord
       .first
 
     if overlapping_frame
-      errors.add(:base, I18n.t("models.frame.errors.no_frame_overlap"))
+      errors.add(:base, I18n.t("activerecord.errors.models.frame.attributes.base.no_overlap"))
     end
   end
 

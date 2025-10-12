@@ -58,7 +58,7 @@ RSpec.describe Circle, type: :model do
 
             aggregate_failures do
               expect(circle).not_to be_valid
-              expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
+              expect(circle.errors[:base]).to include(I18n.t('activerecord.errors.models.circle.attributes.base.fits_in_frame'))
             end
           end
 
@@ -67,7 +67,7 @@ RSpec.describe Circle, type: :model do
 
             aggregate_failures do
               expect(circle).not_to be_valid
-              expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
+              expect(circle.errors[:base]).to include(I18n.t('activerecord.errors.models.circle.attributes.base.fits_in_frame'))
             end
           end
 
@@ -76,7 +76,7 @@ RSpec.describe Circle, type: :model do
 
             aggregate_failures do
               expect(circle).not_to be_valid
-              expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
+              expect(circle.errors[:base]).to include(I18n.t('activerecord.errors.models.circle.attributes.base.fits_in_frame'))
             end
           end
 
@@ -85,7 +85,7 @@ RSpec.describe Circle, type: :model do
 
             aggregate_failures do
               expect(circle).not_to be_valid
-              expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.circle_fits_in_frame'))
+              expect(circle.errors[:base]).to include(I18n.t('activerecord.errors.models.circle.attributes.base.fits_in_frame'))
             end
           end
 
@@ -119,7 +119,7 @@ RSpec.describe Circle, type: :model do
 
             aggregate_failures do
               expect(circle).not_to be_valid
-              expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.no_circle_overlap'))
+              expect(circle.errors[:base]).to include(I18n.t('activerecord.errors.models.circle.attributes.base.no_overlap'))
             end
           end
         end
@@ -130,7 +130,7 @@ RSpec.describe Circle, type: :model do
 
             aggregate_failures do
               expect(circle).not_to be_valid
-              expect(circle.errors[:base]).to include(I18n.t('models.circle.errors.no_circle_overlap'))
+              expect(circle.errors[:base]).to include(I18n.t('activerecord.errors.models.circle.attributes.base.no_overlap'))
             end
           end
 

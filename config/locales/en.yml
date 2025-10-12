@@ -28,13 +28,47 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
-  
-  models:
-    frame:
-      errors:
-        no_frame_overlap: "Frame cannot overlap or touch another frame"
-    circle:
-      errors:
-        circle_fits_in_frame: "Circle must fit completely inside the frame"
-        no_circle_overlap: "Circle cannot overlap or touch another circle"
+  activerecord:
+    models:
+      frame: Frame
+      circle: Circle
+    attributes:
+      frame:
+        x_axis: X Position
+        y_axis: Y Position
+        width: Width
+        height: Height
+        circle_count: Circle Count
+        highest_circle_position: Highest Circle Position
+        lowest_circle_position: Lowest Circle Position
+        leftmost_circle_position: Leftmost Circle Position
+        rightmost_circle_position: Rightmost Circle Position
+      circle:
+        x_axis: X Position
+        y_axis: Y Position
+        diameter: Diameter
+        frame_id: Frame ID
+    errors:
+      models:
+        frame:
+          attributes:
+            base:
+              no_overlap: "Frame cannot overlap or touch another frame"
+        circle:
+          attributes:
+            base:
+              fits_in_frame: "Circle must fit completely inside the frame"
+              no_overlap: "Circle cannot overlap or touch another circle"
+
+  errors:
+    messages:
+      missing_parameters: "Missing required parameters: %{params}"
+      not_found: "%{model} not found"
+      cannot_delete_with_associations: "Cannot delete %{model} with %{association}"
+    
+    models:
+      frame:
+        not_found: "Frame not found"
+        cannot_delete_with_circles: "Cannot delete frame with circles"
+      circle:
+        not_found: "Circle not found"

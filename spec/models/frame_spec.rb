@@ -117,7 +117,7 @@ RSpec.describe Frame, type: :model do
               reference_frame.assign_attributes(x_axis: 100, y_axis: 100)
               expect(reference_frame).not_to be_valid
               expect(reference_frame.errors[:base])
-                .to include(I18n.t('models.frame.errors.no_frame_overlap'))
+                .to include(I18n.t('activerecord.errors.models.frame.attributes.base.no_overlap'))
             end
           end
         end

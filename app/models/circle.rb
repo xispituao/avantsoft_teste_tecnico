@@ -22,7 +22,7 @@ class Circle < ApplicationRecord
        x_axis + radius > frame.x_axis + frame.width ||
        y_axis - radius < frame.y_axis ||
        y_axis + radius > frame.y_axis + frame.height
-      errors.add(:base, I18n.t("models.circle.errors.circle_fits_in_frame"))
+      errors.add(:base, I18n.t("activerecord.errors.models.circle.attributes.base.fits_in_frame"))
     end
   end
 
@@ -38,7 +38,7 @@ class Circle < ApplicationRecord
       .first
 
     if overlapping_circle
-      errors.add(:base, I18n.t("models.circle.errors.no_circle_overlap"))
+      errors.add(:base, I18n.t("activerecord.errors.models.circle.attributes.base.no_overlap"))
     end
   end
 end

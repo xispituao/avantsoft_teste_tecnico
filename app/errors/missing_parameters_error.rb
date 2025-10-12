@@ -9,7 +9,7 @@ class MissingParametersError < StandardError
   end
 
   def message
-    "Missing required parameters: #{missing_params.join(', ')}"
+    I18n.t('errors.messages.missing_parameters', params: missing_params.join(', '))
   end
 end
 
