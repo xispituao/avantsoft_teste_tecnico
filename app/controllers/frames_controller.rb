@@ -8,7 +8,7 @@ class FramesController < ApplicationController
     @frame = Frame.new(frame_params)
 
     if @frame.save
-      render json: @frame, status: :created
+      render json: @frame, serializer: FrameSerializer, status: :created
     else
       render json: { errors: @frame.errors }, status: :unprocessable_entity
     end
@@ -16,18 +16,7 @@ class FramesController < ApplicationController
 
   # GET /frames/:i
   def show
-    render json: {
-      id: @frame.id,
-      x_axis: @frame.x_axis,
-      y_axis: @frame.y_axis,
-      width: @frame.width,
-      height: @frame.height,
-      circle_count: @frame.circle_count,
-      highest_circle_position: @frame.highest_circle_position,
-      lowest_circle_position: @frame.lowest_circle_position,
-      leftmost_circle_position: @frame.leftmost_circle_position,
-      rightmost_circle_position: @frame.rightmost_circle_position
-    }
+    render json: @frame, serializer: FrameSerializer
   end
 
   # DELETE /frames/:id

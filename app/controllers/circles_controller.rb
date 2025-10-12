@@ -24,7 +24,7 @@ class CirclesController < ApplicationController
       end
     end
 
-    render json: circles
+    render json: circles, each_serializer: CircleSerializer
   end
 
   # POST /frames/:frame_id/circles
@@ -32,7 +32,7 @@ class CirclesController < ApplicationController
     @circle = @frame.circles.new(circle_params)
 
     if @circle.save
-      render json: @circle, status: :created
+      render json: @circle, serializer: CircleSerializer, status: :created
     else
       render json: { errors: @circle.errors }, status: :unprocessable_entity
     end
@@ -41,7 +41,7 @@ class CirclesController < ApplicationController
   # PUT /circles/:id
   def update
     if @circle.update(circle_params)
-      render json: @circle
+      render json: @circle, serializer: CircleSerializer
     else
       render json: { errors: @circle.errors }, status: :unprocessable_entity
     end
