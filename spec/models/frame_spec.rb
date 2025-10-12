@@ -175,9 +175,9 @@ RSpec.describe Frame, type: :model do
     end
   end
 
-  describe 'GeometryService integration' do
+  describe 'GeometryHelper integration' do
     describe '.rectangles_overlap_or_touch?' do
-      subject { GeometryService.rectangles_overlap_or_touch?(frame1, frame2) }
+      subject { GeometryHelper.rectangles_overlap_or_touch?(frame1, frame2) }
 
       let(:frame1) { build(:frame, x_axis: 0, y_axis: 0, width: 50, height: 50) }
 

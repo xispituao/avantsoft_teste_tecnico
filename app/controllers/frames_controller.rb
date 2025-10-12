@@ -5,9 +5,9 @@ class FramesController < ApplicationController
 
   # POST /frames
   def create
-    @frame = Frame.new(frame_params)
+    @frame = Frames::CreateService.new(attributes: frame_params).call
 
-    if @frame.save
+    if @frame.persisted?
       render json: @frame, serializer: FrameSerializer, status: :created
     else
       render json: { errors: @frame.errors }, status: :unprocessable_entity
@@ -21,11 +21,12 @@ class FramesController < ApplicationController
 
   # DELETE /frames/:id
   def destroy
-    if @frame.circles.any?
-      render json: { error: "Cannot delete frame with circles" }, status: :unprocessable_entity
-    else
-      @frame.destroy
+    result = Frames::DestroyService.new(frame: @frame).call
+
+    if result[:success]
       head :no_content
+    else
+      render json: { error: result[:error] }, status: :unprocessable_entity
     end
   end
 

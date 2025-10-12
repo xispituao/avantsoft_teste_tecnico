@@ -6,32 +6,15 @@ class CirclesController < ApplicationController
 
   # GET /circles?center_x=X&center_y=Y&radius=R&frame_id=ID
   def index
-    circles = Circle.all
-    circles = circles.where(frame_id: params[:frame_id]) if params[:frame_id].present?
-
-    # Filtra circles dentro do raio especificado
-    if params[:center_x].present? && params[:center_y].present? && params[:radius].present?
-      center_x = params[:center_x].to_f
-      center_y = params[:center_y].to_f
-      radius = params[:radius].to_f
-
-      circles = circles.select do |circle|
-        distance = GeometryService.euclidean_distance(
-          center_x, center_y,
-          circle.x_axis, circle.y_axis
-        )
-        distance <= radius
-      end
-    end
-
+    circles = Circles::FilterService.new(params).call
     render json: circles, each_serializer: CircleSerializer
   end
 
   # POST /frames/:frame_id/circles
   def create
-    @circle = @frame.circles.new(circle_params)
+    @circle = Circles::CreateService.new(frame: @frame, attributes: circle_params).call
 
-    if @circle.save
+    if @circle.persisted?
       render json: @circle, serializer: CircleSerializer, status: :created
     else
       render json: { errors: @circle.errors }, status: :unprocessable_entity
@@ -40,16 +23,18 @@ class CirclesController < ApplicationController
 
   # PUT /circles/:id
   def update
-    if @circle.update(circle_params)
-      render json: @circle, serializer: CircleSerializer
+    circle = Circles::UpdateService.new(circle: @circle, attributes: circle_params).call
+
+    if circle.errors.empty?
+      render json: circle, serializer: CircleSerializer
     else
-      render json: { errors: @circle.errors }, status: :unprocessable_entity
+      render json: { errors: circle.errors }, status: :unprocessable_entity
     end
   end
 
   # DELETE /circles/:id
   def destroy
-    @circle.destroy
+    Circles::DestroyService.new(circle: @circle).call
     head :no_content
   end
 
