@@ -19,10 +19,49 @@ paths:
       responses:
         '201':
           description: circle criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  frame_id:
+                    type: integer
+                  x_axis:
+                    type: number
+                  y_axis:
+                    type: number
+                  diameter:
+                    type: number
+                required:
+                - id
+                - frame_id
+                - x_axis
+                - y_axis
+                - diameter
         '422':
           description: circle não cabe no frame
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                required:
+                - errors
         '404':
           description: frame não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           application/json:
@@ -52,25 +91,40 @@ paths:
       parameters:
       - name: center_x
         in: query
-        required: false
+        required: true
+        description: Coordenada X do centro
         schema:
           type: number
       - name: center_y
         in: query
-        required: false
+        required: true
+        description: Coordenada Y do centro
         schema:
           type: number
       - name: radius
         in: query
-        required: false
+        required: true
+        description: Raio de busca
         schema:
           type: number
       - name: frame_id
         in: query
         required: false
+        description: ID do frame (opcional)
         schema:
           type: integer
       responses:
+        '400':
+          description: parâmetros obrigatórios faltando
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
         '200':
           description: circles filtrados por raio
           content:
@@ -90,6 +144,12 @@ paths:
                       type: number
                     diameter:
                       type: number
+                  required:
+                  - id
+                  - frame_id
+                  - x_axis
+                  - y_axis
+                  - diameter
   "/circles/{id}":
     parameters:
     - name: id
@@ -105,10 +165,49 @@ paths:
       responses:
         '200':
           description: circle atualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  frame_id:
+                    type: integer
+                  x_axis:
+                    type: number
+                  y_axis:
+                    type: number
+                  diameter:
+                    type: number
+                required:
+                - id
+                - frame_id
+                - x_axis
+                - y_axis
+                - diameter
         '422':
           description: posição inválida
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                required:
+                - errors
         '404':
           description: circle não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
       requestBody:
         content:
           application/json:
@@ -122,6 +221,12 @@ paths:
                       type: number
                     y_axis:
                       type: number
+                    diameter:
+                      type: number
+                  required:
+                  - x_axis
+                  - y_axis
+                  - diameter
     delete:
       summary: Remove circle
       tags:
@@ -141,8 +246,53 @@ paths:
       responses:
         '201':
           description: frame criado com circles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  x_axis:
+                    type: number
+                  y_axis:
+                    type: number
+                  width:
+                    type: number
+                  height:
+                    type: number
+                  circle_count:
+                    type: integer
+                  highest_circle_position:
+                    type: number
+                    nullable: true
+                  lowest_circle_position:
+                    type: number
+                    nullable: true
+                  leftmost_circle_position:
+                    type: number
+                    nullable: true
+                  rightmost_circle_position:
+                    type: number
+                    nullable: true
+                required:
+                - id
+                - x_axis
+                - y_axis
+                - width
+                - height
+                - circle_count
         '422':
           description: frame sobrepõe outro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                required:
+                - errors
       requestBody:
         content:
           application/json:
@@ -199,29 +349,45 @@ paths:
                   id:
                     type: integer
                   x_axis:
-                    type: string
+                    type: number
                   y_axis:
-                    type: string
+                    type: number
                   width:
-                    type: string
+                    type: number
                   height:
-                    type: string
+                    type: number
                   circle_count:
                     type: integer
                   highest_circle_position:
-                    type: string
+                    type: number
                     nullable: true
                   lowest_circle_position:
-                    type: string
+                    type: number
                     nullable: true
                   leftmost_circle_position:
-                    type: string
+                    type: number
                     nullable: true
                   rightmost_circle_position:
-                    type: string
+                    type: number
                     nullable: true
+                required:
+                - id
+                - x_axis
+                - y_axis
+                - width
+                - height
+                - circle_count
         '404':
           description: frame não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
     delete:
       summary: Remove frame
       tags:

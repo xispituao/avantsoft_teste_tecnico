@@ -3,6 +3,8 @@
 require 'swagger_helper'
 
 RSpec.describe 'Circles API', type: :request do
+  include SwaggerSchemas
+  
   before { host! 'localhost:3000' }
 
   path '/frames/{frame_id}/circles' do
@@ -13,22 +15,10 @@ RSpec.describe 'Circles API', type: :request do
       consumes 'application/json'
       produces 'application/json'
 
-      parameter name: :circle, in: :body, schema: {
-        type: :object,
-        properties: {
-          circle: {
-            type: :object,
-            properties: {
-              x_axis: { type: :number },
-              y_axis: { type: :number },
-              diameter: { type: :number }
-            },
-            required: %w[x_axis y_axis diameter]
-          }
-        }
-      }
+      parameter name: :circle, in: :body, schema: SwaggerSchemas::CIRCLE_INPUT
 
       response '201', 'circle criado' do
+        schema SwaggerSchemas::CIRCLE_RESPONSE
         let(:frame_id) { create(:frame, x_axis: 0, y_axis: 0, width: 100, height: 100).id }
         let(:circle) { { circle: { x_axis: 50, y_axis: 50, diameter: 10 } } }
 
@@ -40,6 +30,7 @@ RSpec.describe 'Circles API', type: :request do
       end
 
       response '422', 'circle não cabe no frame' do
+        schema SwaggerSchemas::VALIDATION_ERRORS
         let(:frame_id) { create(:frame, x_axis: 0, y_axis: 0, width: 10, height: 10).id }
         let(:circle) { { circle: { x_axis: 50, y_axis: 50, diameter: 20 } } }
 
@@ -47,6 +38,7 @@ RSpec.describe 'Circles API', type: :request do
       end
 
       response '404', 'frame não encontrado' do
+        schema SwaggerSchemas::ERROR
         let(:frame_id) { 999999 }
         let(:circle) { { circle: { x_axis: 5, y_axis: 5, diameter: 2 } } }
 
@@ -67,10 +59,7 @@ RSpec.describe 'Circles API', type: :request do
       parameter name: :frame_id, in: :query, type: :integer, required: false, description: 'ID do frame (opcional)'
 
       response '400', 'parâmetros obrigatórios faltando' do
-        schema type: :object,
-          properties: {
-            error: { type: :string }
-          }
+        schema SwaggerSchemas::ERROR
 
         context 'sem center_x' do
           let(:center_x) { nil }
@@ -124,6 +113,7 @@ RSpec.describe 'Circles API', type: :request do
       end
 
       response '200', 'circles filtrados por raio' do
+        schema SwaggerSchemas::CIRCLES_ARRAY
         let(:test_frame) { create(:frame, x_axis: 0, y_axis: 0, width: 100, height: 100) }
         let!(:circle_inside) { create(:circle, frame: test_frame, x_axis: 5, y_axis: 5, diameter: 2) }
         let!(:circle_outside) { create(:circle, frame: test_frame, x_axis: 50, y_axis: 50, diameter: 2) }
@@ -149,20 +139,10 @@ RSpec.describe 'Circles API', type: :request do
       consumes 'application/json'
       produces 'application/json'
 
-      parameter name: :circle, in: :body, schema: {
-        type: :object,
-        properties: {
-          circle: {
-            type: :object,
-            properties: {
-              x_axis: { type: :number },
-              y_axis: { type: :number }
-            }
-          }
-        }
-      }
+      parameter name: :circle, in: :body, schema: SwaggerSchemas::CIRCLE_INPUT
 
       response '200', 'circle atualizado' do
+        schema SwaggerSchemas::CIRCLE_RESPONSE
         let(:id) { create(:circle).id }
         let(:circle) { { circle: { x_axis: 30 } } }
 
@@ -170,6 +150,7 @@ RSpec.describe 'Circles API', type: :request do
       end
 
       response '422', 'posição inválida' do
+        schema SwaggerSchemas::VALIDATION_ERRORS
         let(:test_frame) { create(:frame, x_axis: 0, y_axis: 0, width: 100, height: 100) }
         let(:test_circle) { create(:circle, frame: test_frame, x_axis: 50, y_axis: 50, diameter: 10) }
         let(:id) { test_circle.id }
@@ -179,6 +160,7 @@ RSpec.describe 'Circles API', type: :request do
       end
 
       response '404', 'circle não encontrado' do
+        schema SwaggerSchemas::ERROR
         let(:id) { 999999 }
         let(:circle) { { circle: { x_axis: 5 } } }
 
@@ -196,6 +178,7 @@ RSpec.describe 'Circles API', type: :request do
       end
 
       response '404', 'circle não encontrado' do
+        schema SwaggerSchemas::ERROR
         let(:id) { 999999 }
 
         run_test!

@@ -3,6 +3,8 @@
 require 'swagger_helper'
 
 RSpec.describe 'Frames API', type: :request do
+  include SwaggerSchemas
+  
   before { host! 'localhost:3000' }
 
   path '/frames' do
@@ -12,34 +14,10 @@ RSpec.describe 'Frames API', type: :request do
       produces 'application/json'
       description 'Cria frame e opcionalmente circles aninhados'
 
-      parameter name: :frame, in: :body, schema: {
-        type: :object,
-        properties: {
-          frame: {
-            type: :object,
-            properties: {
-              x_axis: { type: :number },
-              y_axis: { type: :number },
-              width: { type: :number },
-              height: { type: :number },
-              circles_attributes: {
-                type: :array,
-                items: {
-                  type: :object,
-                  properties: {
-                    x_axis: { type: :number },
-                    y_axis: { type: :number },
-                    diameter: { type: :number }
-                  }
-                }
-              }
-            },
-            required: %w[x_axis y_axis width height]
-          }
-        }
-      }
+      parameter name: :frame, in: :body, schema: SwaggerSchemas::FRAME_INPUT
 
       response '201', 'frame criado' do
+        schema SwaggerSchemas::FRAME_RESPONSE
         let(:frame) { { frame: { x_axis: 0, y_axis: 0, width: 100, height: 100 } } }
 
         run_test! do |response|
@@ -50,6 +28,7 @@ RSpec.describe 'Frames API', type: :request do
       end
 
       response '201', 'frame criado com circles' do
+        schema SwaggerSchemas::FRAME_RESPONSE
         let(:frame) do
           {
             frame: {
@@ -73,12 +52,14 @@ RSpec.describe 'Frames API', type: :request do
       end
 
       response '422', 'parâmetros inválidos' do
+        schema SwaggerSchemas::VALIDATION_ERRORS
         let(:frame) { { frame: { width: -1 } } }
 
         run_test!
       end
 
       response '422', 'frame sobrepõe outro' do
+        schema SwaggerSchemas::VALIDATION_ERRORS
         let!(:existing_frame) { create(:frame, x_axis: 0, y_axis: 0, width: 10, height: 10) }
         let(:frame) { { frame: { x_axis: 5, y_axis: 5, width: 10, height: 10 } } }
 
@@ -96,19 +77,7 @@ RSpec.describe 'Frames API', type: :request do
       description 'Retorna frame com total de circles e posições extremas'
 
       response '200', 'frame encontrado' do
-        schema type: :object,
-          properties: {
-            id: { type: :integer },
-            x_axis: { type: :string },
-            y_axis: { type: :string },
-            width: { type: :string },
-            height: { type: :string },
-            circle_count: { type: :integer },
-            highest_circle_position: { type: :string, nullable: true },
-            lowest_circle_position: { type: :string, nullable: true },
-            leftmost_circle_position: { type: :string, nullable: true },
-            rightmost_circle_position: { type: :string, nullable: true }
-          }
+        schema SwaggerSchemas::FRAME_RESPONSE
 
         let(:id) { create(:frame).id }
 
@@ -121,6 +90,7 @@ RSpec.describe 'Frames API', type: :request do
       end
 
       response '404', 'frame não encontrado' do
+        schema SwaggerSchemas::ERROR
         let(:id) { 999999 }
 
         run_test!
@@ -138,6 +108,7 @@ RSpec.describe 'Frames API', type: :request do
       end
 
       response '422', 'frame possui circles' do
+        schema SwaggerSchemas::ERROR
         let(:frame_with_circles) { create(:frame) }
         let!(:circle) { create(:circle, frame: frame_with_circles) }
         let(:id) { frame_with_circles.id }
