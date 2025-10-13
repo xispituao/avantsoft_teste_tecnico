@@ -14,8 +14,9 @@ set -e  # Para execução em caso de erro
 readonly VALID_ENVIRONMENTS=("development" "staging" "production")
 
 # Parâmetros de entrada
-ENVIRONMENT=${1:-development} # Ambiente (development, staging, production)
-DETACH=${2:-"--detach"}       # Modo detach (--detach ou --no-detach)
+ENVIRONMENT=${1:-development}      # Ambiente (development, staging, production)
+DETACH=${2:-"--detach"}           # Modo detach (--detach ou --no-detach)
+SKIP_CONTAINER=${3:-""}           # Flag --skip-container (para CI/CD)
 
 # =============================================================================
 # VALIDAÇÃO DE PARÂMETROS
@@ -44,4 +45,4 @@ if [ ! -d ".git" ]; then
   git init -q
 fi
 
-./init.sh "$DETACH"
+./init.sh "$DETACH" "$SKIP_CONTAINER"
