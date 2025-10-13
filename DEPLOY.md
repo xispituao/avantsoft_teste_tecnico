@@ -48,19 +48,18 @@ O Render vai criar automaticamente:
 
 O Render vai iniciar o primeiro deploy automaticamente:
 
-1. **Preparação:** Executa `./up.sh production --detach --skip-container`
-   - Copia arquivos de `base_files/production/` para a raiz
-   - Pula a execução do docker-compose (containers gerenciados pelo Render)
-2. **Build:** Imagem Docker é construída usando o Dockerfile de produção
-3. **Setup:** `entrypoint.sh` instala gems e executa migrations
-4. **Start:** Aplicação inicia
+1. **Build:** Imagem Docker é construída usando o Dockerfile de produção (`base_files/production/Dockerfile`)
+   - O Dockerfile copia automaticamente os arquivos necessários
+   - Gems são instaladas durante o build (multi-stage build otimizado)
+2. **Setup:** `entrypoint.sh` configura banco de dados e executa migrations
+3. **Start:** Aplicação inicia
 
 ⏱️ **Tempo estimado:** 5-10 minutos
 
 **Como funciona:**
-- O projeto usa `base_files/production/` com Dockerfile otimizado (multi-stage build)
-- O Render executa `./up.sh production --detach --skip-container` (mesma preparação, sem docker-compose)
-- O `entrypoint.sh` de produção cuida do setup automaticamente!
+- O projeto usa `base_files/production/Dockerfile` com build multi-stage otimizado
+- O Dockerfile copia automaticamente os arquivos necessários de `base_files/`
+- O `entrypoint.sh` de produção cuida do setup automaticamente (database config, migrations, etc)
 
 ## 🔄 Deploy Automático (CD)
 

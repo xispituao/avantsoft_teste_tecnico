@@ -45,6 +45,9 @@ WORKDIR /app
 
 COPY --chown=app_user:app_group . .
 
+# Garante que entrypoint.sh de produção está na raiz (para Render)
+RUN cp -f ./base_files/production/entrypoint.sh ./entrypoint.sh 2>/dev/null || true
+
 EXPOSE 3000
 
 ENTRYPOINT ["sh", "./entrypoint.sh"]
