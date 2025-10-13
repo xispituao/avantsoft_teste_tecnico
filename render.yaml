@@ -3,12 +3,11 @@ services:
   - type: web
     name: avantsoft-api
     runtime: docker
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./base_files/production/Dockerfile
     region: oregon
     plan: free
     branch: main
     healthCheckPath: /up
-    preDeployCommand: "./up.sh production --detach --skip-container"
     envVars:
       - key: ENVIRONMENT
         value: production

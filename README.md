@@ -177,7 +177,7 @@ git push origin main
 
 O Render irá:
 - ✅ Detectar automaticamente o `render.yaml`
-- ✅ Preparar ambiente de produção (`./up.sh production --skip-container`)
+- ✅ Fazer build usando Dockerfile de produção otimizado (multi-stage)
 - ✅ Criar Web Service + PostgreSQL
 - ✅ Executar migrations automaticamente
 - ✅ Fazer deploy automático
