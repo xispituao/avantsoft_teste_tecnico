@@ -147,6 +147,57 @@ Serializers (JSON output)
 - **Models**: Validações e associações
 - **Serializers**: Formatação de resposta
 
+## 🚀 Deploy & CD
+
+### Continuous Deployment
+
+A aplicação está preparada para deploy com configuração de **Continuous Deployment (CD)**:
+
+- ✅ Deploy automático ao fazer merge na branch `main`
+- ✅ Validação de variáveis de ambiente
+- ✅ Preparação automática do ambiente
+- ✅ Execução de migrations
+- ✅ Health checks
+
+O projeto é **agnóstico de plataforma** - pode ser deployado em qualquer provedor que suporte Docker ou Ruby/Rails (Render, Heroku, Railway, Fly.io, AWS, GCP, etc.).
+
+### Opção Escolhida: Render
+
+**Neste projeto, optei pelo Render** devido a:
+- Free tier generoso com PostgreSQL incluído
+- Deploy automático via `render.yaml` (Infrastructure as Code)
+- Zero configuração de infraestrutura
+
+#### Como funciona no Render
+
+```bash
+# Basta fazer push para a branch main
+git push origin main
+```
+
+O Render irá:
+- ✅ Detectar automaticamente o `render.yaml`
+- ✅ Preparar ambiente de produção (`./up.sh production --skip-container`)
+- ✅ Criar Web Service + PostgreSQL
+- ✅ Executar migrations automaticamente
+- ✅ Fazer deploy automático
+
+**📖 Guia Completo:** Veja [DEPLOY.md](DEPLOY.md) para instruções detalhadas sobre deploy no Render.
+
+#### Requisitos (Render)
+
+1. Conta no [Render](https://render.com) (free tier funciona)
+2. Repositório conectado ao GitHub
+3. `RAILS_MASTER_KEY` configurado manualmente no dashboard
+
+### CI/CD Pipeline
+
+Pipeline automático configurado via GitHub Actions:
+
+- ✅ Testes automáticos em cada PR/push
+- ✅ Rubocop + Brakeman
+- ✅ Deploy automático após merge na `main` (via Render)
+
 ## 📈 Performance
 
 - Zero N+1 queries

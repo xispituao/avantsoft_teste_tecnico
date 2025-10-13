@@ -1,0 +1,57 @@
+services:
+  # Web Service - Aplicação Rails
+  - type: web
+    name: avantsoft-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    region: oregon
+    plan: free
+    branch: main
+    healthCheckPath: /up
+    preDeployCommand: "./up.sh production --detach --skip-container"
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      - key: DB_HOST
+        fromDatabase:
+          name: avantsoft-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: avantsoft-db
+          property: port
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: avantsoft-db
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: avantsoft-db
+          property: password
+      - key: POSTGRES_DB
+        fromDatabase:
+          name: avantsoft-db
+          property: database
+      - key: RAILS_LOG_TO_STDOUT
+        value: "1"
+      - key: RAILS_MAX_THREADS
+        value: "5"
+      - key: RAILS_INTERNAL_PORT
+        value: "3000"
+      - key: RAILS_PORT
+        value: "3000"
+    autoDeploy: true
+
+databases:
+  - name: avantsoft-db
+    databaseName: avantsoft_production
+    plan: free
+    region: oregon
+    ipAllowList: []
+
