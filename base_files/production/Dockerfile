@@ -51,4 +51,4 @@ RUN cp -f ./base_files/production/entrypoint.sh ./entrypoint.sh 2>/dev/null || t
 EXPOSE 3000
 
 ENTRYPOINT ["sh", "./entrypoint.sh"]
-CMD ["sh", "-c", "rails server -b 0.0.0.0 -p ${RAILS_INTERNAL_PORT:-3000}"]
+CMD ["sh", "-c", "bundle exec rails server -b 0.0.0.0 -p ${RAILS_INTERNAL_PORT:-3000}"]
