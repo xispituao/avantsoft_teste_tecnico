@@ -116,10 +116,10 @@ RSpec.describe 'Circles API', type: :request do
 
       response '200', 'circles filtrados por raio' do
         schema SwaggerSchemas::CIRCLES_ARRAY
-        header 'X-Total-Count', type: :integer, description: 'Total de registros'
-        header 'X-Total-Pages', type: :integer, description: 'Total de páginas'
-        header 'X-Current-Page', type: :integer, description: 'Página atual'
-        header 'X-Per-Page', type: :integer, description: 'Itens por página'
+        header 'X-Total-Count', schema: { type: :integer }, description: 'Total de registros'
+        header 'X-Total-Pages', schema: { type: :integer }, description: 'Total de páginas'
+        header 'X-Current-Page', schema: { type: :integer }, description: 'Página atual'
+        header 'X-Per-Page', schema: { type: :integer }, description: 'Itens por página'
 
         let(:test_frame) { create(:frame, x_axis: 0, y_axis: 0, width: 100, height: 100) }
         let!(:circle_inside) { create(:circle, frame: test_frame, x_axis: 5, y_axis: 5, diameter: 2) }
@@ -142,10 +142,10 @@ RSpec.describe 'Circles API', type: :request do
 
       response '200', 'circles paginados' do
         schema SwaggerSchemas::CIRCLES_ARRAY
-        header 'X-Total-Count', type: :integer
-        header 'X-Total-Pages', type: :integer
-        header 'X-Current-Page', type: :integer
-        header 'X-Per-Page', type: :integer
+        header 'X-Total-Count', schema: { type: :integer }, description: 'Total de registros'
+        header 'X-Total-Pages', schema: { type: :integer }, description: 'Total de páginas'
+        header 'X-Current-Page', schema: { type: :integer }, description: 'Página atual'
+        header 'X-Per-Page', schema: { type: :integer }, description: 'Itens por página'
 
         let(:test_frame) { create(:frame, x_axis: 0, y_axis: 0, width: 200, height: 200) }
         let!(:circles_list) do

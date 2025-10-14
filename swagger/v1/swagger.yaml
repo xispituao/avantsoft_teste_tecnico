@@ -141,16 +141,20 @@ paths:
           description: circles paginados
           headers:
             X-Total-Count:
-              type: integer
+              schema:
+                type: integer
               description: Total de registros
             X-Total-Pages:
-              type: integer
+              schema:
+                type: integer
               description: Total de páginas
             X-Current-Page:
-              type: integer
+              schema:
+                type: integer
               description: Página atual
             X-Per-Page:
-              type: integer
+              schema:
+                type: integer
               description: Itens por página
           content:
             application/json:
