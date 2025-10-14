@@ -33,7 +33,7 @@ class Frame < ApplicationRecord
     overlapping_frame = Frame
       .where.not(id: id)
       .where(
-        "(x_axis + width >= ? AND x_axis <= ? + ?) AND (y_axis + height >= ? AND y_axis <= ? + ?)",
+        "(x_axis + width >= ?::numeric AND x_axis <= ?::numeric + ?::numeric) AND (y_axis + height >= ?::numeric AND y_axis <= ?::numeric + ?::numeric)",
         x_axis, x_axis, width, y_axis, y_axis, height
       )
       .first
