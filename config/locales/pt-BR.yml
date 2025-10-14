@@ -20,6 +20,10 @@ pt-BR:
         diameter: Diâmetro
         frame_id: ID do Quadro
     errors:
+      messages:
+        blank: "não pode ficar em branco"
+        not_a_number: "não é um número"
+        greater_than: "deve ser maior que %{count}"
       models:
         frame:
           attributes:
