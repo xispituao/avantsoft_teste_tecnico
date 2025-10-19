@@ -18,8 +18,8 @@ class Frame < ApplicationRecord
     y_positions = positions.map(&:last)
 
     update_columns(
-      highest_circle_position: y_positions.min,
-      lowest_circle_position: y_positions.max,
+      highest_circle_position: y_positions.max,
+      lowest_circle_position: y_positions.min,
       leftmost_circle_position: x_positions.min,
       rightmost_circle_position: x_positions.max
     )

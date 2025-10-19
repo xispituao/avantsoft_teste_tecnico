@@ -148,14 +148,14 @@ RSpec.describe Frame, type: :model do
         create(:circle, frame: frame, x_axis: 50, y_axis: 50)
       end
 
-      it 'updates highest_circle_position to minimum y_axis' do
+      it 'updates highest_circle_position to maximum y_axis' do
         frame.update_circle_positions!
-        expect(frame.highest_circle_position).to eq(10)
+        expect(frame.highest_circle_position).to eq(90)
       end
 
-      it 'updates lowest_circle_position to maximum y_axis' do
+      it 'updates lowest_circle_position to minimum y_axis' do
         frame.update_circle_positions!
-        expect(frame.lowest_circle_position).to eq(90)
+        expect(frame.lowest_circle_position).to eq(10)
       end
 
       it 'updates leftmost_circle_position to minimum x_axis' do
