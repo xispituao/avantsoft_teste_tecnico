@@ -66,7 +66,7 @@ end
 
 group :test do
   # Shoulda Matchers for simple one-liners [https://github.com/thoughtbot/shoulda-matchers]
-  gem "shoulda-matchers", "~> 6.0"
+  gem "shoulda-matchers", "~> 7.0"
 end
 
 # Swagger UI and API documentation
